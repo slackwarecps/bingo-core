@@ -1,0 +1,10 @@
+.git
+.gitignore
+
+.settings
+.project
+
+target
+
+*.json
+*.md
