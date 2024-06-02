@@ -1,27 +1,21 @@
-package br.com.fabioalvaro.sorteiocore.dominio;
+package br.com.fabioalvaro.sorteiocore.dominio.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter
-@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "cartela")
-@Data
-public class Cartela {
-    @Id
+@Setter
+@Getter
+public class CartelaResponseDTO {
     private String id;
-
     private LocalDateTime criado;
     private String jogador;
 
