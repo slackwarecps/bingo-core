@@ -8,6 +8,19 @@ Maven 3.8.8
 
 # Regras de Negocio 
 * preencher aqui
+Crie uma classe java chamada cartela que contenha tres objetos linha. Cada objeto linha deve guardar uma lista de 5 numeros inteiros e ter um propriedade chamada sorteados que deve ser integer e uma propriedade boolean chamada quadra que por padrao deve ser false;
+
+## O formato ISO 8601 para data e hora é: YYYY-MM-DDTHH:MM:SSZ
+
+YYYY - Ano com quatro dígitos
+MM - Mês com dois dígitos (01 a 12)
+DD - Dia com dois dígitos (01 a 31)
+T - Separador de data e hora
+HH - Hora com dois dígitos (00 a 23)
+MM - Minutos com dois dígitos (00 a 59)
+SS - Segundos com dois dígitos (00 a 59)
+Z - Indicador de fuso horário UTC (pode ser substituído por um deslocamento de fuso horário, como +00:00)
+2024-06-02 08:22:22:001
 
 # Endpoints
 
@@ -27,6 +40,7 @@ Para configurar o VSCode para executar o projeto, use o seguinte arquivo launch.
 ````
 //launch.json
 {
+ {
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
@@ -40,11 +54,14 @@ Para configurar o VSCode para executar o projeto, use o seguinte arquivo launch.
         },
         {
             "type": "java",
-            "name": "Bingo-Pay",
+            "name": "SorteiocoreApplication",
             "request": "launch",
-            "mainClass": "br.com.fabioalvaro.pagamento.PagamentoApplication",
-            "projectName": "pagamento",
-            "args": "--spring.profiles.active=local"
+            "mainClass": "br.com.fabioalvaro.sorteiocore.SorteiocoreApplication",
+            "env": {
+                "MONGO_DB_USERNAME": "rootuser",
+                "MONGO_DB_PASSWORD": "rootpass"
+            },
+            "projectName": "sorteiocore"
         }
     ]
 }
@@ -53,4 +70,11 @@ Para configurar o VSCode para executar o projeto, use o seguinte arquivo launch.
 # Collection do ThunderClient 
 Para testar os metodos existe uma collection json que pode ser acessada na pasta /collection
 * instale a extensao ThunderCliente do vscode ou importe a collection no postman.
+# MONGO
+```
+$ brew install mongodb-atlas
+$ atlas setup
 
+export MONGO_DB_USERNAME=seu_usuario
+export MONGO_DB_PASSWORD=sua_senha
+```
