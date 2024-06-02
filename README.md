@@ -70,11 +70,15 @@ Para configurar o VSCode para executar o projeto, use o seguinte arquivo launch.
 # Collection do ThunderClient 
 Para testar os metodos existe uma collection json que pode ser acessada na pasta /collection
 * instale a extensao ThunderCliente do vscode ou importe a collection no postman.
+
 # MONGO
 ```
-$ brew install mongodb-atlas
-$ atlas setup
+Entre na pasta mongodb
+e rode o comando $ docker-compose up
 
 export MONGO_DB_USERNAME=seu_usuario
 export MONGO_DB_PASSWORD=sua_senha
 ```
+# depois acesse o mongo pelo express
+usuario admin:pass
+http://localhost:8081/db/bingo/cartela
