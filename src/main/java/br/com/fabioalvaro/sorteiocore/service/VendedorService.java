@@ -1,5 +1,6 @@
 package br.com.fabioalvaro.sorteiocore.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,8 @@ public class VendedorService {
     private VendedorRepository vendedorRepository;
 
     public Vendedor saveVendedor(Vendedor vendedor) {
+
+        vendedor.setCreatedAt(LocalDateTime.now());
         return vendedorRepository.save(vendedor);
     }
 

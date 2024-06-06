@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.request.CartelaDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.response.CartelaResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/cartelas")
@@ -30,10 +33,11 @@ public class CartelaController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<CartelaResponseDTO> adicionarCartela(@RequestBody CartelaDTO cartelaDTO) {
+    public ResponseEntity<CartelaResponseDTO> adicionarCartela(@Valid @RequestBody CartelaDTO cartelaDTO) {
         Cartela cartela = new Cartela();
         cartela.setCriado(cartelaDTO.getCriado());
         cartela.setJogador(cartelaDTO.getJogador());
+        cartela.setSorteioId(cartelaDTO.getSorteioId());
 
         List<List<Integer>> linhas = cartelaService.geraNumerosRandomicos();
         cartela.setLinha01(linhas.get(0));
@@ -46,6 +50,7 @@ public class CartelaController {
         responseDTO.setId(savedCartela.getId());
         responseDTO.setCriado(savedCartela.getCriado());
         responseDTO.setJogador(savedCartela.getJogador());
+        responseDTO.setSorteioId(savedCartela.getSorteioId());
         responseDTO.setLinha01(savedCartela.getLinha01());
         responseDTO.setLinha02(savedCartela.getLinha02());
         responseDTO.setLinha03(savedCartela.getLinha03());
@@ -58,5 +63,11 @@ public class CartelaController {
     @PostMapping("/criar")
     public String criarTeste(@RequestBody Cartela cartela) {
         return cartelaService.geraNumerosRandomicos().toString();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        // Trate a exceção aqui e retorne uma resposta de erro apropriada
+        return ResponseEntity.badRequest().body("Erro de validação: " + ex.getMessage());
     }
 }

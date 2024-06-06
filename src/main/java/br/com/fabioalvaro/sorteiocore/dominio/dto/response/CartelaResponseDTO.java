@@ -18,6 +18,7 @@ public class CartelaResponseDTO {
     private String id;
     private LocalDateTime criado;
     private String jogador;
+    private String sorteioId;
 
     List<Integer> linha01;
     List<Integer> linha02;

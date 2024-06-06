@@ -34,9 +34,11 @@ public class SorteioController {
         responseDTO.setId(savedSorteio.getId());
         responseDTO.setCreateAt(savedSorteio.getCreateAt());
 
+        SorteioResponseDTO responseDTO2 = sorteioService.mapeiaParaSorteioResponseDTO(savedSorteio);
+
         logger.info("Sorteio Gerada: {} ", savedSorteio);
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(responseDTO2, HttpStatus.CREATED);
     }
 
 }

@@ -26,6 +26,6 @@ public class Vendedor {
     private String nome;
 
     private Double saldoVendido;
-    private LocalDateTime criado;
+    private LocalDateTime createdAt;
 
 }
