@@ -1,5 +1,6 @@
 package br.com.fabioalvaro.sorteiocore.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class JogadorService {
     }
 
     public Jogador save(Jogador jogador) {
+        jogador.setCreatedAt(LocalDateTime.now());
         return jogadorRepository.save(jogador);
     }
 
