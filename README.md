@@ -82,3 +82,67 @@ export MONGO_DB_PASSWORD=sua_senha
 # depois acesse o mongo pelo express
 usuario admin:pass
 http://localhost:8081/db/bingo/cartela
+
+
+##  Compra de Cartelas
+História: Como um jogador, eu quero comprar cartelas de bingo para participar dos jogos.
+Critérios de Aceitação:
+O jogador pode visualizar as cartelas disponíveis para compra.
+O jogador pode selecionar e comprar cartelas.
+O jogador recebe uma confirmação de compra.
+
+## Título: Compra de Cartelas de Bingo
+
+História: Como um jogador, eu quero comprar cartelas de bingo para participar dos jogos.
+
+Critérios de Aceitação:
+
+O jogador pode visualizar as cartelas disponíveis para compra.
+O jogador pode selecionar e comprar cartelas.
+O jogador recebe uma confirmação de compra.
+Requisitos Funcionais:
+
+Visualização de Cartelas:
+
+O sistema deve exibir uma lista de cartelas de bingo disponíveis para compra.
+Cada cartela deve mostrar informações como preço, número de série e design.
+Seleção e Compra de Cartelas:
+
+O jogador deve poder selecionar uma ou mais cartelas para compra.
+O sistema deve permitir que o jogador adicione cartelas ao carrinho de compras.
+O jogador deve poder revisar o carrinho de compras antes de finalizar a compra.
+O sistema deve processar o pagamento através de métodos de pagamento suportados (ex: cartão de crédito, PayPal).
+Confirmação de Compra:
+
+Após a compra, o sistema deve exibir uma mensagem de confirmação ao jogador.
+O sistema deve enviar um e-mail de confirmação ao jogador com os detalhes da compra.
+As cartelas compradas devem ser adicionadas à conta do jogador para uso em jogos futuros.
+Requisitos Não Funcionais:
+
+Desempenho:
+
+O sistema deve carregar a lista de cartelas disponíveis em no máximo 2 segundos.
+O processo de compra deve ser concluído em no máximo 5 segundos após a confirmação do pagamento.
+Segurança:
+
+Todas as transações de pagamento devem ser realizadas em um ambiente seguro (HTTPS).
+Os dados de pagamento do jogador devem ser protegidos e não armazenados no sistema.
+Usabilidade:
+
+A interface de compra deve ser intuitiva e fácil de usar, com instruções claras em cada etapa do processo.
+O sistema deve ser acessível em dispositivos móveis e desktops.
+Confiabilidade:
+
+O sistema deve ter uma disponibilidade de 99.9% para garantir que os jogadores possam comprar cartelas a qualquer momento.
+O sistema deve registrar todas as transações de compra para fins de auditoria.
+Tarefas:
+
+Desenvolver a interface de visualização de cartelas.
+Implementar a funcionalidade de seleção e adição de cartelas ao carrinho.
+Integrar o sistema de pagamento.
+Implementar a funcionalidade de confirmação de compra e envio de e-mail.
+Testar a funcionalidade de compra de cartelas em diferentes dispositivos e navegadores.
+Realizar testes de segurança e desempenho.
+
+
+
