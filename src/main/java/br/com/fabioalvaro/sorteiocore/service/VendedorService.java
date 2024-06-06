@@ -22,9 +22,8 @@ public class VendedorService {
         return vendedorRepository.save(vendedor);
     }
 
-    public Vendedor getVendedorById(String id) {
-        Optional<Vendedor> vendedor = vendedorRepository.findById(id);
-        return vendedor.orElse(null);
+    public Optional<Vendedor> buscarVendedorById(String id) {
+        return vendedorRepository.findById(id);
     }
 
     public List<Vendedor> getAllVendedores() {

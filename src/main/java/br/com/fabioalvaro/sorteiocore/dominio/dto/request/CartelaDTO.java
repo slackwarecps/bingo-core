@@ -1,15 +1,21 @@
 package br.com.fabioalvaro.sorteiocore.dominio.dto.request;
 
-import java.time.LocalDateTime;
-
 import jakarta.validation.constraints.NotBlank;
 
 public class CartelaDTO {
-    private String id;
-    private LocalDateTime criado;
-    private String jogador;
+    private String jogadorId;
     @NotBlank
     private String sorteioId;
+    @NotBlank
+    private String vendedorId;
+
+    public String getVendedorId() {
+        return vendedorId;
+    }
+
+    public void setVendedorId(String vendedorId) {
+        this.vendedorId = vendedorId;
+    }
 
     public String getSorteioId() {
         return sorteioId;
@@ -19,28 +25,55 @@ public class CartelaDTO {
         this.sorteioId = sorteioId;
     }
 
-    // Getters and Setters
-    public String getId() {
-        return id;
+    public String getJogadorId() {
+        return jogadorId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setJogadorId(String jogador) {
+        this.jogadorId = jogador;
     }
 
-    public LocalDateTime getCriado() {
-        return criado;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((jogadorId == null) ? 0 : jogadorId.hashCode());
+        result = prime * result + ((sorteioId == null) ? 0 : sorteioId.hashCode());
+        result = prime * result + ((vendedorId == null) ? 0 : vendedorId.hashCode());
+        return result;
     }
 
-    public void setCriado(LocalDateTime criado) {
-        this.criado = criado;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CartelaDTO other = (CartelaDTO) obj;
+
+        if (jogadorId == null) {
+            if (other.jogadorId != null)
+                return false;
+        } else if (!jogadorId.equals(other.jogadorId))
+            return false;
+        if (sorteioId == null) {
+            if (other.sorteioId != null)
+                return false;
+        } else if (!sorteioId.equals(other.sorteioId))
+            return false;
+        if (vendedorId == null) {
+            if (other.vendedorId != null)
+                return false;
+        } else if (!vendedorId.equals(other.vendedorId))
+            return false;
+        return true;
     }
 
-    public String getJogador() {
-        return jogador;
+    @Override
+    public String toString() {
+        return "CartelaDTO [jogadorId=" + jogadorId + ", sorteioId=" + sorteioId + ", vendedorId=" + vendedorId + "]";
     }
 
-    public void setJogador(String jogador) {
-        this.jogador = jogador;
-    }
 }

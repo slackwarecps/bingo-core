@@ -1,5 +1,6 @@
 package br.com.fabioalvaro.sorteiocore.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class CartelaService {
     }
 
     public Cartela adicionarCartela(Cartela cartela) {
+        cartela.setCreatedAt(LocalDateTime.now());
         return cartelaRepository.save(cartela);
     }
 

@@ -24,6 +24,10 @@ public class JogadorService {
         return jogadorRepository.findById(id);
     }
 
+    public Optional<Jogador> buscarJogadorById(String id) {
+        return jogadorRepository.findById(id);
+    }
+
     public Jogador save(Jogador jogador) {
         jogador.setCreatedAt(LocalDateTime.now());
         return jogadorRepository.save(jogador);

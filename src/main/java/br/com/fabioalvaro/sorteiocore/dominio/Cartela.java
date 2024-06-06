@@ -23,8 +23,9 @@ public class Cartela {
     @Id
     private String id;
 
-    private LocalDateTime criado;
-    private String jogador;
+    private LocalDateTime createdAt;
+    @NotNull
+    private String jogadorId;
 
     List<Integer> linha01;
     List<Integer> linha02;
@@ -34,6 +35,7 @@ public class Cartela {
     private String sorteioId;
     @NotNull
     private String vendedorId;
+
     @NotNull
     private Double valor;
     private Boolean ganhouQuadra;

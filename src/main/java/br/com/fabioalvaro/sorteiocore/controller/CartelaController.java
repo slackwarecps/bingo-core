@@ -1,6 +1,7 @@
 package br.com.fabioalvaro.sorteiocore.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
+import br.com.fabioalvaro.sorteiocore.dominio.Jogador;
+import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
+import br.com.fabioalvaro.sorteiocore.dominio.Vendedor;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.request.CartelaDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.response.CartelaResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
+import br.com.fabioalvaro.sorteiocore.service.JogadorService;
+import br.com.fabioalvaro.sorteiocore.service.SorteioService;
+import br.com.fabioalvaro.sorteiocore.service.VendedorService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -26,6 +33,12 @@ public class CartelaController {
     private static final Logger logger = LoggerFactory.getLogger(CartelaController.class);
     @Autowired
     private CartelaService cartelaService;
+    @Autowired
+    private SorteioService sorteioService;
+    @Autowired
+    private VendedorService vendedorService;
+    @Autowired
+    private JogadorService jogadorService;
 
     @PostMapping("/teste")
     public Cartela adicionarCartela2(@RequestBody Cartela cartela) {
@@ -34,10 +47,33 @@ public class CartelaController {
 
     @PostMapping(produces = "application/json")
     public ResponseEntity<CartelaResponseDTO> adicionarCartela(@Valid @RequestBody CartelaDTO cartelaDTO) {
+        logger.error("[CartelaController: POST ]DTO: {}", cartelaDTO.toString());
         Cartela cartela = new Cartela();
-        cartela.setCriado(cartelaDTO.getCriado());
-        cartela.setJogador(cartelaDTO.getJogador());
+        cartela.setJogadorId(cartelaDTO.getJogadorId());
         cartela.setSorteioId(cartelaDTO.getSorteioId());
+        cartela.setVendedorId(cartelaDTO.getVendedorId());
+        // Validar Sorteio
+        Optional<Sorteio> sorteioLocalizado = sorteioService.buscarSorteioPorId(cartelaDTO.getSorteioId());
+        // Validar Vendedor
+        Optional<Vendedor> vendedorLocalizado = vendedorService.buscarVendedorById(cartelaDTO.getVendedorId());
+        // Validar Vendedor
+        Optional<Jogador> jogadorLocalizado = jogadorService.buscarJogadorById(cartelaDTO.getJogadorId());
+
+        if (sorteioLocalizado.isEmpty()) {
+            // Sorteio não encontrado, retorne uma resposta de erro
+            logger.error("[CartelaController: POST ]SorteioId nao localizado: {} ", cartelaDTO.getSorteioId());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (vendedorLocalizado.isEmpty()) {
+            // Sorteio não encontrado, retorne uma resposta de erro
+            logger.error("[CartelaController: POST ]vendedorId nao localizado: {} ", cartelaDTO.getVendedorId());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (jogadorLocalizado.isEmpty()) {
+            // Sorteio não encontrado, retorne uma resposta de erro
+            logger.error("[CartelaController: POST ]jogadorId nao localizado: {} ", cartelaDTO.getJogadorId());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         List<List<Integer>> linhas = cartelaService.geraNumerosRandomicos();
         cartela.setLinha01(linhas.get(0));
@@ -48,9 +84,10 @@ public class CartelaController {
 
         CartelaResponseDTO responseDTO = new CartelaResponseDTO();
         responseDTO.setId(savedCartela.getId());
-        responseDTO.setCriado(savedCartela.getCriado());
-        responseDTO.setJogador(savedCartela.getJogador());
+        responseDTO.setCreatedAt(savedCartela.getCreatedAt());
+        responseDTO.setJogadorId(savedCartela.getJogadorId());
         responseDTO.setSorteioId(savedCartela.getSorteioId());
+        responseDTO.setVendedorId(savedCartela.getVendedorId());
         responseDTO.setLinha01(savedCartela.getLinha01());
         responseDTO.setLinha02(savedCartela.getLinha02());
         responseDTO.setLinha03(savedCartela.getLinha03());

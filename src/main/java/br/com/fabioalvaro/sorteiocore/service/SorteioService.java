@@ -1,6 +1,7 @@
 package br.com.fabioalvaro.sorteiocore.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class SorteioService {
         LocalDateTime created = LocalDateTime.now();
         sorteio.setCreateAt(created);
         return sorteioRepository.save(sorteio);
+    }
+
+    public Optional<Sorteio> buscarSorteioPorId(String id) {
+        return sorteioRepository.findById(id);
     }
 
     public SorteioResponseDTO mapeiaParaSorteioResponseDTO(Sorteio sorteio) {

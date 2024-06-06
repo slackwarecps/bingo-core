@@ -1,6 +1,7 @@
 package br.com.fabioalvaro.sorteiocore.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,8 @@ public class VendedorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vendedor> getVendedorById(@PathVariable String id) {
-        Vendedor vendedor = vendedorService.getVendedorById(id);
+    public ResponseEntity<Optional<Vendedor>> getVendedorById(@PathVariable String id) {
+        Optional<Vendedor> vendedor = vendedorService.buscarVendedorById(id);
         return ResponseEntity.ok(vendedor);
     }
 

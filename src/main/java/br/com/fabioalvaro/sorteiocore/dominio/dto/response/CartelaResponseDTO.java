@@ -16,9 +16,10 @@ import lombok.ToString;
 @Getter
 public class CartelaResponseDTO {
     private String id;
-    private LocalDateTime criado;
-    private String jogador;
+    private LocalDateTime createdAt;
+    private String jogadorId;
     private String sorteioId;
+    private String vendedorId;
 
     List<Integer> linha01;
     List<Integer> linha02;
