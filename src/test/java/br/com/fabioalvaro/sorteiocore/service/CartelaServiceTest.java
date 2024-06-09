@@ -32,8 +32,8 @@ public class CartelaServiceTest {
         String dateTimeString = "2024-06-02T08:22:22.001";
         LocalDateTime criado = LocalDateTime.parse(dateTimeString);
         cartela.setId("xpto001");
-        cartela.setCriado(criado);
-        cartela.setJogador("nutella");
+        cartela.setCreatedAt(criado);
+        cartela.setJogadorId("nutella");
         // Act
         // Boolean result = cartelaService.geraNumerosRandomicos();
 

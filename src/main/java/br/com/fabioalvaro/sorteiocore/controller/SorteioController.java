@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
+import br.com.fabioalvaro.sorteiocore.dominio.dto.request.SorteiaBolaDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.request.SorteioDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
@@ -22,8 +23,15 @@ public class SorteioController {
     @Autowired
     private SorteioService sorteioService;
 
+    @PostMapping(path = "/sorteia-bola", produces = "application/json")
+    public ResponseEntity<SorteiaBolaDTO> adicionarSorteio(@RequestBody SorteiaBolaDTO sorteioDTO) {
+
+        sorteioService.sorteiaBola(sorteioDTO.getSorteioId());
+        return new ResponseEntity<>(sorteioDTO, HttpStatus.CREATED);
+    }
+
     @PostMapping(produces = "application/json")
-    public ResponseEntity<SorteioResponseDTO> adicionarSorteio(@RequestBody SorteioDTO sorteioDTO) {
+    public ResponseEntity<SorteioResponseDTO> sorteiaBola(@RequestBody SorteioDTO sorteioDTO) {
         Sorteio sorteio = new Sorteio();
         sorteio.setCreateAt(sorteioDTO.getCreateAt());
         sorteio.setLocal(sorteioDTO.getLocal());

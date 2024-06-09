@@ -37,10 +37,14 @@ public class Cartela {
     private String vendedorId;
 
     @NotNull
-    private Double valor;
+    private Double valor; // valor da Cartela
     private Boolean ganhouQuadra;
     private Boolean ganhouQuina;
     private Boolean ganhouCheia;
-    private String tiraTeimaId;
+    private String tiraTeimaId;// cartela participou de tirateima?
     private String status; // valores possíveis: "ativa", "cancelada", "
+
+    private Double premioQuadra;// ganhou? sim/nao
+    private Double premioQuina;// ganhou?
+    private Double premioCheio;// ganhou?
 }
