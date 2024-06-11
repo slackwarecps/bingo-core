@@ -145,4 +145,8 @@ Testar a funcionalidade de compra de cartelas em diferentes dispositivos e naveg
 Realizar testes de segurança e desempenho.
 
 
+## Regras
+
+Uma linha nao pode ganhar a quadra se ja ganhou a quadra.
+Uma linha nao pode ganhar a Quina se ja ganhou a quina.
 

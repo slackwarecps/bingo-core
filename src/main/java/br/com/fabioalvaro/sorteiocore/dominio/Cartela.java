@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Document(collection = "cartela")
 @Data
+@ToString
 public class Cartela {
     @Id
     private String id;

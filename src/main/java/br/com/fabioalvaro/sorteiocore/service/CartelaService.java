@@ -33,6 +33,9 @@ public class CartelaService {
 
     public Cartela adicionarCartela(Cartela cartela) {
         cartela.setCreatedAt(LocalDateTime.now());
+        cartela.setGanhouCheia(false);
+        cartela.setGanhouQuadra(false);
+        cartela.setGanhouQuina(false);
         return cartelaRepository.save(cartela);
     }
 
@@ -57,6 +60,10 @@ public class CartelaService {
 
         Boolean retorno = true;
         return conjunto;
+    }
+
+    public List<Cartela> buscarCartelaPorSorteioId(String sorteioId) {
+        return cartelaRepository.findBySorteioId(sorteioId);
     }
 
 }
