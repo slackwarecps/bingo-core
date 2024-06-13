@@ -3,6 +3,7 @@ package br.com.fabioalvaro.sorteiocore.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import br.com.fabioalvaro.sorteiocore.config.ParametrosConfig;
 import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
 import br.com.fabioalvaro.sorteiocore.dominio.RandomNumbers;
+import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
 import br.com.fabioalvaro.sorteiocore.repository.CartelaRepository;
+import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
 
 @Service
 public class CartelaService {
@@ -21,6 +24,9 @@ public class CartelaService {
 
     @Autowired
     private CartelaRepository cartelaRepository;
+
+    @Autowired
+    private SorteioRepository sorteioRepository;
 
     @Autowired
     private RandomNumbers randomNumbers;
@@ -36,6 +42,15 @@ public class CartelaService {
         cartela.setGanhouCheia(false);
         cartela.setGanhouQuadra(false);
         cartela.setGanhouQuina(false);
+
+        // Adiciona Cartela ao Sorteio
+        Optional<Sorteio> optionalSorteio = sorteioRepository.findById(cartela.getSorteioId());
+        if (optionalSorteio.isPresent()) {
+            Sorteio sorteio = optionalSorteio.get();
+            sorteio.setCartelasQtd(sorteio.getCartelasQtd() + 1);
+            sorteioRepository.save(sorteio); // Salva o sorteio atualizado
+        }
+
         return cartelaRepository.save(cartela);
     }
 

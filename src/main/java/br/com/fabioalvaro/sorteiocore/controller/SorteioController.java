@@ -1,5 +1,7 @@
 package br.com.fabioalvaro.sorteiocore.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
 import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.request.SorteiaBolaDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.request.SorteioDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioResponseDTO;
+import br.com.fabioalvaro.sorteiocore.service.CartelaService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 
 @RestController
@@ -22,11 +26,16 @@ public class SorteioController {
     private static final Logger logger = LoggerFactory.getLogger(SorteioController.class);
     @Autowired
     private SorteioService sorteioService;
+    @Autowired
+    private CartelaService cartelaService;
 
     @PostMapping(path = "/sorteia-bola", produces = "application/json")
     public ResponseEntity<SorteiaBolaDTO> adicionarSorteio(@RequestBody SorteiaBolaDTO sorteioDTO) {
 
-        sorteioService.sorteiaBola(sorteioDTO.getSorteioId());
+        List<Cartela> cartelasDoSorteio = cartelaService.buscarCartelaPorSorteioId(sorteioDTO.getSorteioId());
+        Sorteio sorteio = sorteioService.buscarSorteioPorId(sorteioDTO.getSorteioId()).get();
+
+        sorteioService.sorteiaBola(sorteio, cartelasDoSorteio);
         return new ResponseEntity<>(sorteioDTO, HttpStatus.CREATED);
     }
 

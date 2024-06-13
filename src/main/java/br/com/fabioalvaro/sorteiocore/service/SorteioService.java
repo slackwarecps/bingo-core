@@ -56,86 +56,77 @@ public class SorteioService {
     }
 
     // Sorteia uma bola
-    public void sorteiaBola(String sorteioId) {
+    public void sorteiaBola(Sorteio sorteio, List<Cartela> cartelasDoSorteio) {
         logger.info("    ");
         logger.info("    ");
         logger.info("    ");
         logger.info("  ***************************************************************************  ");
-        logger.info("Sorteando bola para o SorteioID: {}", sorteioId);
-        Optional<Sorteio> sorteio = sorteioRepository.findById(sorteioId);
-        if (sorteio.isPresent()) {
-            Sorteio sorteioRetornado = sorteio.get();
+        logger.info("Sorteando bola para o SorteioID: {}", sorteio.getId());
 
-            Boolean sorteioEncerrado = (sorteio.get().getStatus() == "ENCERRADO");
+        Boolean sorteioEncerrado = (sorteio.getStatus() == "ENCERRADO");
 
-            if (sorteioEncerrado != true) {
-                // 01 - Sorteia o Numero
-                Integer numero_sorteado = sorteiaNumero(sorteioRetornado);
+        if (sorteioEncerrado != true) {
+            // 01 - Sorteia o Numero
+            Integer numero_sorteado = sorteiaNumero(sorteio);
 
-                // 02 - Falar a bolinha
-                logger.info("Bola sorteada: {}", numero_sorteado);
+            sorteio.getLista_numeros_sorteados().add(numero_sorteado);
+            sorteio.setNumeros_sorteados_qtd(sorteio.getNumeros_sorteados_qtd() + 1);
+            sorteioRepository.save(sorteio);// adiciona bola aos numeros sorteados.
 
-                // 03 ALGUEM GANHOU??
-                // Boolean alguemGanhou = cartelasGanhadorasComEssaBola(sorteioRetornado);
+            // 02 - Falar a bolinha
+            logger.info("Bola sorteada: {}", numero_sorteado);
+            logger.info("Numeros Sorteados ate o momento: {}", sorteio.getNumeros_sorteados_qtd());
 
-                // sorteioId = "6667a5f4166fd20b978148a6";
-                List<Cartela> cartelasDoSorteio = buscaCartelasDoSorteio(sorteioId);
-                for (Cartela cartela : cartelasDoSorteio) {
-                    logger.info("Cartela: {}", cartela.getId().toString());
-                    // processa linhas QUADRA
-                    logger.info("   Linha1: {}", cartela.getLinha01());
-                    Linha minhaLinha = new Linha();
-                    minhaLinha.setLinha(cartela.getLinha01());
-                    minhaLinha.setGanhouQuadra(false);
-                    minhaLinha.setGanhouQuina(false);
-                    logger.info(minhaLinha.toString());
+            // 03 ALGUEM GANHOU??
+            // Boolean alguemGanhou = cartelasGanhadorasComEssaBola(sorteioRetornado);
 
-                    linhaganhou(sorteioRetornado, minhaLinha, "QUADRA");
+            // sorteioId = "6667a5f4166fd20b978148a6";
+            // List<Cartela> cartelasDoSorteio = buscaCartelasDoSorteio(sorteio.getId());
+            for (Cartela cartela : cartelasDoSorteio) {
+                logger.info("Cartela: {}", cartela.getId().toString());
+                // processa linhas QUADRA
+                logger.info("   Linha1: {}", cartela.getLinha01());
+                Linha minhaLinha = new Linha();
+                minhaLinha.setLinha(cartela.getLinha01());
+                minhaLinha.setGanhouQuadra(false);
+                minhaLinha.setGanhouQuina(false);
+                logger.info(minhaLinha.toString());
 
-                    logger.info("   Linha2: {}", cartela.getLinha02());
-                    logger.info("   Linha3: {}", cartela.getLinha03());
-                }
+                linhaganhou(sorteio, minhaLinha, "QUADRA");
 
-                // 99 - FIM DO SORTEIO?
-                // numero_sorteado = -1;
-                if (numero_sorteado == -1) {
-                    logger.info("99 - FIM DO SORTEIO");
-
-                    // XX - Finaliza e Totaliza o Sorteio encerrar o sorteio
-                    sorteioRetornado.setStatus("ENCERRADO");
-                    sorteioRepository.save(sorteioRetornado);
-
-                    // XXX - NOTIFICA DONO DAS CARTELAS VENCEDORAS
-                    // @TODO NOTIFICA DONO DAS CARTELAS VENCEDORAS
-
-                    return;
-
-                    // throw new RuntimeException("<<< TODAS AS BOLAS JA FORAM SORTEADAS >>>");
-
-                }
-
-                // Insere bola na lista de nunmeros ja sorteados.
-                List<Integer> lista_atual = sorteioRetornado.getLista_numeros_sorteados();
-                // Inicializa a lista se estiver nula
-                if (lista_atual == null) {
-                    lista_atual = new ArrayList<>();
-                    // sorteioRetornado.setLista_numeros_sorteados(lista_atual);
-                }
-
-                lista_atual.add(numero_sorteado);
-                sorteioRetornado.setLista_numeros_sorteados(lista_atual);
-                sorteioRepository.save(sorteioRetornado);
-
-                logger.info("AtualizadoLista de bolas sorteadas: {}", lista_atual);
-            } else {
-                logger.info("99 - Sorteio ja Encerrado!!!");
+                logger.info("   Linha2: {}", cartela.getLinha02());
+                logger.info("   Linha3: {}", cartela.getLinha03());
             }
 
-        } else {
-            throw new RuntimeException("Sorteio não existe!!");
-        }
+            // 99 - FIM DO SORTEIO?
+            // numero_sorteado = -1;
+            if (numero_sorteado == -1) {
+                logger.info("99 - FIM DO SORTEIO");
+                // XX - Finaliza e Totaliza o Sorteio encerrar o sorteio
+                sorteio.setStatus("ENCERRADO");
+                sorteioRepository.save(sorteio);
+                // XXX - NOTIFICA DONO DAS CARTELAS VENCEDORAS
+                // @TODO NOTIFICA DONO DAS CARTELAS VENCEDORAS
+                return;
+                // throw new RuntimeException("<<< TODAS AS BOLAS JA FORAM SORTEADAS >>>");
+            }
 
-        // TODO Auto-generated method stub
+            // Insere bola na lista de nunmeros ja sorteados.
+            List<Integer> lista_atual = sorteio.getLista_numeros_sorteados();
+            // Inicializa a lista se estiver nula
+            if (lista_atual == null) {
+                lista_atual = new ArrayList<>();
+                // sorteioRetornado.setLista_numeros_sorteados(lista_atual);
+            }
+
+            lista_atual.add(numero_sorteado);
+            sorteio.setLista_numeros_sorteados(lista_atual);
+            sorteioRepository.save(sorteio);
+
+            logger.info("AtualizadoLista de bolas sorteadas: {}", lista_atual);
+        } else {
+            logger.info("99 - Sorteio ja Encerrado!!!");
+        }
 
     }
 
