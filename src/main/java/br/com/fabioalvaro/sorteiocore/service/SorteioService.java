@@ -62,20 +62,31 @@ public class SorteioService {
         logger.info("    ");
         logger.info("  ***************************************************************************  ");
         logger.info("Sorteando bola para o SorteioID: {}", sorteio.getId());
+        logger.info("Numeros_sorteados_qtd: {}", sorteio.getNumeros_sorteados_qtd());
 
-        Boolean sorteioEncerrado = (sorteio.getStatus() == "ENCERRADO");
+        Boolean sorteioEncerrado = (sorteio.getStatus() == "ENCERRADO" || sorteio.getNumeros_sorteados_qtd() >= 75);
 
-        if (sorteioEncerrado != true) {
+        if (sorteioEncerrado == false) {
             // 01 - Sorteia o Numero
             Integer numero_sorteado = sorteiaNumero(sorteio);
 
-            sorteio.getLista_numeros_sorteados().add(numero_sorteado);
+            // sorteio.getLista_numeros_sorteados().add(numero_sorteado);
+            List<Integer> numerosSorteados = sorteio.getLista_numeros_sorteados();
+            if (numerosSorteados == null) {
+                numerosSorteados = new ArrayList<>();
+                sorteio.setLista_numeros_sorteados(numerosSorteados);
+            }
+            numerosSorteados.add(numero_sorteado);
+
             sorteio.setNumeros_sorteados_qtd(sorteio.getNumeros_sorteados_qtd() + 1);
             sorteioRepository.save(sorteio);// adiciona bola aos numeros sorteados.
 
             // 02 - Falar a bolinha
             logger.info("Bola sorteada: {}", numero_sorteado);
             logger.info("Numeros Sorteados ate o momento: {}", sorteio.getNumeros_sorteados_qtd());
+            if (sorteio.getNumeros_sorteados_qtd() == 75) {
+                logger.info("FIM DO SORTEIO!!!", sorteio.getNumeros_sorteados_qtd() == 75);
+            }
 
             // 03 ALGUEM GANHOU??
             // Boolean alguemGanhou = cartelasGanhadorasComEssaBola(sorteioRetornado);
@@ -91,21 +102,21 @@ public class SorteioService {
                 minhaLinha.setGanhouQuadra(false);
                 minhaLinha.setGanhouQuina(false);
                 logger.info(minhaLinha.toString());
+                if (linhaganhou(sorteio, minhaLinha, "QUADRA")) {
+                    sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
+                }
 
-                linhaganhou(sorteio, minhaLinha, "QUADRA");
-
-                logger.info("   Linha2: {}", cartela.getLinha02());
-                logger.info("   Linha3: {}", cartela.getLinha03());
+                // logger.info(" Linha2: {}", cartela.getLinha02());
+                // logger.info(" Linha3: {}", cartela.getLinha03());
             }
 
             // 99 - FIM DO SORTEIO?
             // numero_sorteado = -1;
-            if (numero_sorteado == -1) {
+            if (numero_sorteado == -1 || sorteio.getNumeros_sorteados_qtd() == 75) {
                 logger.info("99 - FIM DO SORTEIO");
                 // XX - Finaliza e Totaliza o Sorteio encerrar o sorteio
                 sorteio.setStatus("ENCERRADO");
                 sorteioRepository.save(sorteio);
-                // XXX - NOTIFICA DONO DAS CARTELAS VENCEDORAS
                 // @TODO NOTIFICA DONO DAS CARTELAS VENCEDORAS
                 return;
                 // throw new RuntimeException("<<< TODAS AS BOLAS JA FORAM SORTEADAS >>>");
@@ -119,11 +130,12 @@ public class SorteioService {
                 // sorteioRetornado.setLista_numeros_sorteados(lista_atual);
             }
 
-            lista_atual.add(numero_sorteado);
-            sorteio.setLista_numeros_sorteados(lista_atual);
-            sorteioRepository.save(sorteio);
-
-            logger.info("AtualizadoLista de bolas sorteadas: {}", lista_atual);
+            logger.info("  ***************************************************************************  ");
+            logger.info("Bolas sorteadas: {}", lista_atual);
+            logger.info("Numeros_sorteados_qtd: {}", sorteio.getNumeros_sorteados_qtd());
+            logger.info("    ");
+            logger.info("    ");
+            logger.info("    ");
         } else {
             logger.info("99 - Sorteio ja Encerrado!!!");
         }
@@ -156,7 +168,7 @@ public class SorteioService {
         Boolean retorno = null;
         // SE QUADRA
         if (modoAnalise == "QUADRA") {
-            if (count >= 4 && linha.isGanhouQuadra() == false) {
+            if (count == 4 && linha.isGanhouQuadra() == false) {
                 System.out.println("Linha Vencedora QUADRA: " + count);
 
                 retorno = true;
@@ -168,7 +180,7 @@ public class SorteioService {
         }
         // SE QUINA
         else if (modoAnalise == "QUINA") {
-            if (count >= 5 && linha.isGanhouQuina() == false) {
+            if (count == 5 && linha.isGanhouQuina() == false) {
                 System.out.println("Linha Vencedora QUINA: " + count);
                 retorno = true;
             } else {
@@ -185,7 +197,8 @@ public class SorteioService {
 
     }
 
-    private Integer sorteiaNumero(Sorteio sorteioRetornado) {
+    public Integer sorteiaNumero(Sorteio sorteioRetornado) {
+        int numeroMaximo = 75;
         Random random = new Random();
         // Lista dos numeros ja sorteados
         List<Integer> lista_numeros_sorteados = sorteioRetornado.getLista_numeros_sorteados();
@@ -203,7 +216,7 @@ public class SorteioService {
 
         int numero;
         do {
-            numero = random.nextInt(10) + 1; // Gera um número entre 1 e 75
+            numero = random.nextInt(numeroMaximo) + 1; // Gera um número entre 1 e 75
         } while (lista_numeros_sorteados.contains(numero));
 
         // int numero = random.nextInt(75) + 1; // Gera um número entre 1 e 75
