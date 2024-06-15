@@ -145,8 +145,14 @@ Testar a funcionalidade de compra de cartelas em diferentes dispositivos e naveg
 Realizar testes de segurança e desempenho.
 
 
-## Regras
+## Regras do bingo
 
-Uma linha nao pode ganhar a quadra se ja ganhou a quadra.
-Uma linha nao pode ganhar a Quina se ja ganhou a quina.
+As cartelas possuem numeros aleatorios entre 1 a 75.
+Cada Cartela possui 15 numeros que não se repetem em cada cartela.
+Cada Cartela tem 3 linhas de 5 numeros em cada.
+O sorteio deve ser encerrado quando 1 ou mais pessoas conseguirem preencher os 15 numeros de uma cartela.
+É possivel que 1 ou mais pessoas consigam ganhar com cartela cheia.
 
+Uma linha de uma cartela nao pode ganhar a quadra se ja ganhou a quadra.
+Uma linha de uma cartela  nao pode ganhar a Quina se ja ganhou a quina.
+Uma cartela pode ganhar 1 quadra, 1 quina e 1 cartela cheia.

@@ -161,8 +161,13 @@ public class SorteioService {
                 if (sorteio.getNumeros_sorteados_qtd() >= 15) {
                     logger.info(" Analise de Cartela Cheia=ON qtd={}", sorteio.getNumeros_sorteados_qtd());
                     cartelaVencedora = cartelaCheiaganhou(sorteio, cartela);
-                    if (cartelaVencedora)
+                    if (cartelaVencedora) {
                         ListaDeCartelasCheiasVencedoras.add(cartela.getId());
+                        sorteio.setGanharamFull((sorteio.getGanharamFull() + 1));
+                        cartela.setGanhouCheia(true);
+                        cartelaRepository.save(cartela);
+
+                    }
                 }
 
             }
@@ -170,7 +175,7 @@ public class SorteioService {
 
             // 99 - FIM DO SORTEIO?
             // numero_sorteado = -1;
-            if (numero_sorteado == -1 || sorteio.getNumeros_sorteados_qtd() == 75) {
+            if (numero_sorteado == -1 || sorteio.getNumeros_sorteados_qtd() == 75 || cartelaVencedora == true) {
                 logger.info("99 - FIM DO SORTEIO");
                 // XX - Finaliza e Totaliza o Sorteio encerrar o sorteio
                 sorteio.setStatus("ENCERRADO");
