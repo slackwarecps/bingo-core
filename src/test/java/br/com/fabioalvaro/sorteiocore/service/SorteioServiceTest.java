@@ -78,7 +78,7 @@ public class SorteioServiceTest {
                 // List<Integer> c1l1 = new ArrayList<>();
                 cartela1.setLinha01(Arrays.asList(1, 2, 3, 4, 5));
                 cartela1.setLinha02(Arrays.asList(6, 7, 8, 9, 10));
-                cartela1.setLinha03(new ArrayList<>());
+                cartela1.setLinha03(Arrays.asList(11, 12, 13, 14, 15));
                 cartela1.setSorteioId(sorteio.getId());
                 cartela1.setGanhouCheia(false);
                 cartela1.setGanhouQuadra(false);
