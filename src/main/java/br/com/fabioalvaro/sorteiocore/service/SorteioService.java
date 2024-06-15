@@ -201,44 +201,57 @@ public class SorteioService {
 
     }
 
+    // Criado pelo quick command
+    // Stackspot AI
     /**
-     * Checks if the given card has won the full card game.
+     * Verifica se a cartela ganhou com todos os números sorteados.
      *
-     * @param sorteio The draw containing the list of drawn numbers.
-     * @param cartela The card to be checked.
-     * @return True if the card has won the full card game, false otherwise.
+     * @param sorteio O objeto Sorteio contendo a lista de números sorteados.
+     * @param cartela O objeto Cartela contendo os números da cartela.
+     * @return true se a cartela ganhou com todos os números sorteados, false caso
+     *         contrário.
      */
     private Boolean cartelaCheiaganhou(Sorteio sorteio, Cartela cartela) {
+        // Log de início da análise da cartela cheia
         logger.info("");
-        logger.info("       %%%%%%%%%%%%%% FULL CARD ANALYSIS %%%%%%%%%%%%%%%%%%%%%%");
-        // Configuring
+        logger.info("       %%%%%%%%%%%%%% ANALISE CARTELA CHEIA %%%%%%%%%%%%%%%%%%%%%%");
+
+        // Configuração da lista de números sorteados
         List<Integer> lista_sorteados = sorteio.getLista_numeros_sorteados();
         if (lista_sorteados != null) {
             Collections.sort(lista_sorteados);
         }
+
+        // Unificação das linhas da cartela em uma única lista
         List<Integer> listaUnificada = new ArrayList<>();
         listaUnificada.addAll(cartela.getLinha01());
         listaUnificada.addAll(cartela.getLinha02());
         listaUnificada.addAll(cartela.getLinha03());
+
+        // Contagem de números sorteados presentes na cartela
         int count = 0;
         for (Integer numero : listaUnificada) {
             if (lista_sorteados.contains(numero)) {
                 count++;
             }
         }
+
+        // Verificação se a cartela ganhou cheia
         Boolean retorno = null;
-        if (count >= 15 && cartela.getGanhouCheia() == false) {
-            System.out.println("        Winning Full Card: " + count);
+        if (count >= 15 && !cartela.getGanhouCheia()) {
+            System.out.println("        Cartela Ganhou Cheia: " + count);
             cartela.setGanhouCheia(true);
             cartelaRepository.save(cartela);
             retorno = true;
         } else {
-            // Display the result
-            if (cartela.getGanhouCheia() == true)
-                logger.warn("       Card has already won the FULL game.", true);
-            logger.info("       Marked numbers: " + count);
+            // Exibição do resultado
+            if (cartela.getGanhouCheia()) {
+                logger.warn("      Cartela já ganhou cheia.", true);
+            }
+            logger.info("       Numeros ja sorteados: " + count);
             retorno = false;
         }
+
         return retorno;
     }
 
