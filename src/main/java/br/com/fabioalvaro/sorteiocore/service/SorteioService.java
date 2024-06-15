@@ -68,7 +68,7 @@ public class SorteioService {
         logger.info("Sorteando bola para o SorteioID: {}", sorteio.getId());
         logger.info("Numeros_sorteados_qtd: {}", sorteio.getNumeros_sorteados_qtd());
 
-        Boolean sorteioEncerrado = (sorteio.getStatus() == "ENCERRADO" || sorteio.getNumeros_sorteados_qtd() >= 75);
+        Boolean sorteioEncerrado = sorteio.getStatus().equals("ENCERRADO");
 
         if (sorteioEncerrado == false) {
             // 01 - Sorteia o Numero
@@ -117,7 +117,7 @@ public class SorteioService {
                 }
                 // processa linha QUINA
                 if (linhaganhou(sorteio, minhaLinha1, "QUINA", cartela)) {
-                    sorteio.setGanharamQuadra(sorteio.getGanharamQuina() + 1);
+                    sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
                 }
 
                 // LINHA 2
@@ -135,7 +135,7 @@ public class SorteioService {
                 }
                 // processa linha QUINA
                 if (linhaganhou(sorteio, minhaLinha2, "QUINA", cartela)) {
-                    sorteio.setGanharamQuadra(sorteio.getGanharamQuina() + 1);
+                    sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
                 }
 
                 // LINHA 3
@@ -150,11 +150,15 @@ public class SorteioService {
                 // processa linhas QUADRA
                 if (linhaganhou(sorteio, minhaLinha3, "QUADRA", cartela)) {
                     sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
+
                 }
                 // processa linha QUINA
                 if (linhaganhou(sorteio, minhaLinha3, "QUINA", cartela)) {
-                    sorteio.setGanharamQuadra(sorteio.getGanharamQuina() + 1);
+                    sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
+
                 }
+
+                sorteioRepository.save(sorteio);
 
                 // Busca Cartelas que ganharam Full
                 // quantidade de bolas sorteadas é igual ou maior que 15
@@ -243,7 +247,7 @@ public class SorteioService {
 
         // Verificação se a cartela ganhou cheia
         Boolean retorno = null;
-        if (count >= 15 && !cartela.getGanhouCheia()) {
+        if (count >= 15 && cartela.getGanhouCheia() == false) {
             System.out.println("        Cartela Ganhou Cheia: " + count);
             cartela.setGanhouCheia(true);
             cartelaRepository.save(cartela);
