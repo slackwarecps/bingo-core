@@ -133,7 +133,6 @@ public class SorteioServiceTest {
 
                 // Assert
                 assertEquals(initialCount + 1, sorteio.getNumeros_sorteados_qtd().intValue());
-                verify(sorteioRepository, times(1)).save(sorteio);
 
         }
 

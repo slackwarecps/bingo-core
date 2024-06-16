@@ -1,0 +1,54 @@
+version: "3.8"
+services:
+    localstack:
+        container_name: bingo-localstack
+        image: localstack/localstack
+        ports:
+        - "4566:4566"
+        - "4510-4559:4510-4559"
+        environment:
+        - DOCKER_HOST=unix:///var/run/docker.sock
+        volumes:
+        - ./localstack-script/bucket:/tmp/localstack/bucket
+        - ./localstack-script:/etc/localstack/init/ready.d
+        - /var/run/docker.sock:/var/run/docker.sock
+
+    sqs-admin-ui:
+        image: akilamaxi/sqs-admin-ui:v1
+        environment:
+        - AWS_ACCESS_KEY_ID=test
+        - AWS_SECRET_ACCESS_KEY=test
+        - AWS_REGION=us-east-1
+        - SQS_ENDPOINT_URL=http://localstack:4566  # Pointing to the SQS service in localstack
+        ports:
+        - "8082:8080"
+        depends_on:
+        - localstack 
+
+    mongodb:
+        image: mongo
+        container_name: mongodb
+        ports: 
+            - 27017:27017
+        volumes:         
+            - data:/data
+            - ./mongo-db-script/init-sorteio.js:/docker-entrypoint-initdb.d/init-sorteio.js:ro
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=rootuser
+            - MONGO_INITDB_ROOT_PASSWORD=rootpass
+    mongo-express:
+        image: mongo-express
+        container_name: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
+            - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
+            - ME_CONFIG_MONGODB_SERVER=mongodb
+volumes: 
+    data: {} 
+    
+networks:
+    default: 
+        name: mongodb_network
