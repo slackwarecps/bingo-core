@@ -156,3 +156,75 @@ O sorteio deve ser encerrado quando 1 ou mais pessoas conseguirem preencher os 1
 Uma linha de uma cartela nao pode ganhar a quadra se ja ganhou a quadra.
 Uma linha de uma cartela  nao pode ganhar a Quina se ja ganhou a quina.
 Uma cartela pode ganhar 1 quadra, 1 quina e 1 cartela cheia.
+
+
+## prompt
+
+Configura um contêiner Localstack para simular serviços AWS localmente, mapeando portas e montando volumes para persistência e inicialização.
+
+## Prompt
+
+1 Crie arquivos service e repository para persistir a classe Movimento Financeiro no mongodb.
+2 A classe Service deve permitir buscar Movimento Financeiro por uma string jogadorId
+classe="""
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "movimentoFinanceiro")
+@Data
+@ToString
+public class MovimentoFinanceiro {
+    @Id
+    private String id;
+    private LocalDateTime createdAt;
+    private String mensagem;
+    private String tipo;
+    private Double valor;
+    private String origem;
+    private String destino;
+
+}"""
+
+
+## prompt
+refatore o metodo abaixo para receber uma cartela e adicionar um valor de 2,00 no movimento financeiro com os dados do jogador que estao na cartela.
+
+metodo=
+"""
+ @PostMapping("/premiar")
+    public String premiarCartela(@RequestBody Cartela cartela) {
+        return cartelaService.geraNumerosRandomicos().toString();
+    }
+"""
+
+
+## Prompt
+
+1 Crie arquivos service e repository para persistir a classe Notificacao no mongodb.
+2 A classe Service deve permitir buscar as Notificacoes por uma string jogadorId
+3 Crie uma classe controller para buscar as notificacoes por uma string jogadorId
+
+classe="""
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@ToString
+@Document(collection = "notificacao")
+public class Notificacao {
+    @Id
+    String id;
+    @NotNull
+    LocalDateTime createdAt;
+    @NotNull
+    String mensagem;
+    @NotNull
+    String jogadorId;
+    Boolean visualizado;
+}
+
+"""

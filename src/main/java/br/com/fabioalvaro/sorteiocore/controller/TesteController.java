@@ -30,8 +30,8 @@ public class TesteController {
         Linha linha = new Linha();
         linha.setLinha(Arrays.asList(1, 2, 3, 25, 35));
 
-        Boolean result = sorteioService.linhaganhou(sorteio, linha, "QUADRA");
-        logger.info("RETORNO: {} ", result);
+        // Boolean result = sorteioService.linhaganhou(sorteio, linha, "QUADRA");
+        // logger.info("RETORNO: {} ", result);
 
         return "opa";
     }

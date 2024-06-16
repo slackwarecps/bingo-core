@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,7 @@ import br.com.fabioalvaro.sorteiocore.service.VendedorService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/cartelas")
+@RequestMapping("/cartela")
 public class CartelaController {
     private static final Logger logger = LoggerFactory.getLogger(CartelaController.class);
     @Autowired
@@ -100,6 +102,22 @@ public class CartelaController {
     @PostMapping("/criar")
     public String criarTeste(@RequestBody Cartela cartela) {
         return cartelaService.geraNumerosRandomicos().toString();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Cartela> buscarCartelaPorId(@PathVariable String id) {
+        return cartelaService.buscarCartelaPorId(id);
+    }
+
+    @PostMapping("/premiar")
+    public String premiarCartela(@RequestBody Cartela cartela) {
+        logger.info("cartela {}", cartela.getId());
+        Optional<Cartela> cartelaRetornada = cartelaService.buscarCartelaPorId(cartela.getId());
+        if (cartelaRetornada.isPresent()) {
+            cartelaService.premiarCartela(cartelaRetornada.get(), cartela.getValor());
+        }
+
+        return "OK";
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

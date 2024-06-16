@@ -29,6 +29,9 @@ public class CartelaService {
     private SorteioRepository sorteioRepository;
 
     @Autowired
+    private MovimentoFinanceiroService movimentoFinanceiroService;
+
+    @Autowired
     private RandomNumbers randomNumbers;
 
     private final ParametrosConfig parametrosConfig;
@@ -79,6 +82,16 @@ public class CartelaService {
 
     public List<Cartela> buscarCartelaPorSorteioId(String sorteioId) {
         return cartelaRepository.findBySorteioId(sorteioId);
+    }
+
+    public Boolean premiarCartela(Cartela cartelaRetornada, double valor) {
+        // TODO Auto-generated method stub
+        Boolean retorno = movimentoFinanceiroService.adicionaCredito(cartelaRetornada, valor);
+        return retorno;
+    }
+
+    public Optional<Cartela> buscarCartelaPorId(String id) {
+        return cartelaRepository.findById(id);
     }
 
 }
