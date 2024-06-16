@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
 import br.com.fabioalvaro.sorteiocore.dominio.Notificacao;
 import br.com.fabioalvaro.sorteiocore.repository.NotificacaoRepository;
 
@@ -38,6 +39,15 @@ public class NotificacaoService {
         } else {
             throw new RuntimeException("Notificação não encontrada com o ID: " + id);
         }
+    }
+
+    public void notificaCartela(Cartela cartela, String mensagem) {
+        Notificacao notificacao = new Notificacao();
+        notificacao.setJogadorId(cartela.getJogadorId());
+        notificacao.setMensagem(mensagem);
+        this.save(notificacao);
+        // throw new UnsupportedOperationException("Unimplemented method
+        // 'notificaCartela'");
     }
 
 }

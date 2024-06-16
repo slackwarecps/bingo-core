@@ -1,8 +1,10 @@
 package br.com.fabioalvaro.sorteiocore.service;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -30,6 +32,9 @@ public class CartelaService {
 
     @Autowired
     private MovimentoFinanceiroService movimentoFinanceiroService;
+
+    @Autowired
+    private NotificacaoService notificacaoService;
 
     @Autowired
     private RandomNumbers randomNumbers;
@@ -87,6 +92,14 @@ public class CartelaService {
     public Boolean premiarCartela(Cartela cartelaRetornada, double valor) {
         // TODO Auto-generated method stub
         Boolean retorno = movimentoFinanceiroService.adicionaCredito(cartelaRetornada, valor);
+
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        String valorFormatado = nf.format(valor);
+
+        // notifica ganhador
+        String mensagem = "Parabens! sua Cartela " + cartelaRetornada.getId() + " foi Premiada no valor de "
+                + String.valueOf(valorFormatado);
+        notificacaoService.notificaCartela(cartelaRetornada, mensagem);
         return retorno;
     }
 
