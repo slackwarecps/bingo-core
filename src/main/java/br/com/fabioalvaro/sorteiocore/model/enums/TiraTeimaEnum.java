@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.dominio.enums;
+package br.com.fabioalvaro.sorteiocore.model.enums;
 
 public enum TiraTeimaEnum {
 

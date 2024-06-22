@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.bo;
+package br.com.fabioalvaro.sorteiocore.model.bo;
 
 import org.springframework.stereotype.Component;
 

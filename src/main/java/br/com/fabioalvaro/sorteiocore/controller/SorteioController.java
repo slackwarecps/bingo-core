@@ -8,17 +8,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
-import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.request.SorteiaBolaDTO;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.request.SorteioDTO;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioNotificadosDTO;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioResponseDTO;
+import br.com.fabioalvaro.sorteiocore.mapper.SorteioMapper;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.dto.request.SorteiaBolaDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.request.SorteioDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioMinimoDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioNotificadosDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 
@@ -54,19 +57,34 @@ public class SorteioController {
         }
     }
 
+    /**
+     * Endpoint para notificar os ganhadores de um sorteio.
+     * 
+     * @param sorteioDTO Objeto contendo os dados do sorteio.
+     * @return ResponseEntity contendo os dados dos ganhadores notificados e o
+     *         status HTTP.
+     */
     @PostMapping(path = "/notifica-ganhadores", produces = "application/json")
     public ResponseEntity<SorteioNotificadosDTO> NotificaGanhadores(@RequestBody SorteiaBolaDTO sorteioDTO) {
         SorteioNotificadosDTO sorteioNotificadosDTO;
+
+        // Busca o sorteio pelo ID fornecido no DTO
         Optional<Sorteio> sorteio = sorteioService.buscarSorteioPorId(sorteioDTO.getSorteioId());
+
         if (sorteio.isPresent()) {
+            // Notifica os vencedores do sorteio
             sorteioService.notificaVencedores(sorteio.get());
-            sorteioNotificadosDTO = sorteioService.notificaVencedores(sorteio.get());
+
+            // Obtém os dados dos vencedores notificados
+            sorteioNotificadosDTO = SorteioMapper.INSTANCE.sorteioToNotificadosDTO(sorteio.get());
+            // sorteioNotificadosDTO = sorteioService.notificaVencedores(sorteio.get());
+
+            // Retorna os dados dos vencedores notificados com status HTTP 200 (OK)
             return new ResponseEntity<>(sorteioNotificadosDTO, HttpStatus.OK);
         } else {
+            // Retorna status HTTP 404 (Not Found) se o sorteio não for encontrado
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
         }
-
     }
 
     @PostMapping(produces = "application/json")
@@ -86,6 +104,12 @@ public class SorteioController {
         logger.info("Sorteio Gerada: {} ", savedSorteio);
 
         return new ResponseEntity<>(responseDTO2, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public List<SorteioMinimoDTO> getAllSorteios() {
+
+        return sorteioService.buscaTodosMinimosDto();
     }
 
 }

@@ -1,10 +1,11 @@
-package br.com.fabioalvaro.sorteiocore.dominio;
+package br.com.fabioalvaro.sorteiocore.model;
 
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -16,17 +17,17 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "movimentoFinanceiro")
 @Data
 @ToString
-public class MovimentoFinanceiro {
+@Document(collection = "notificacao")
+public class Notificacao {
     @Id
-    private String id;
-    private LocalDateTime createdAt;
-    private String mensagem;
-    private String tipo;
-    private Double valor;
-    private String origem;
-    private String destino;
-
+    String id;
+    @NotNull
+    LocalDateTime createdAt;
+    @NotNull
+    String mensagem;
+    @NotNull
+    String jogadorId;
+    Boolean visualizado;
 }

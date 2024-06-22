@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Jogador;
+import br.com.fabioalvaro.sorteiocore.model.Jogador;
 import br.com.fabioalvaro.sorteiocore.repository.JogadorRepository;
 
 @Service

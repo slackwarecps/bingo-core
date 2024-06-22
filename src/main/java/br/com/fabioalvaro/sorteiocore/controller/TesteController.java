@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Linha;
-import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.Linha;
+import br.com.fabioalvaro.sorteiocore.model.Sorteio;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 
 @RestController

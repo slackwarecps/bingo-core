@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.dominio.dto.request;
+package br.com.fabioalvaro.sorteiocore.model.dto.request;
 
 import java.time.LocalDateTime;
 import java.util.List;

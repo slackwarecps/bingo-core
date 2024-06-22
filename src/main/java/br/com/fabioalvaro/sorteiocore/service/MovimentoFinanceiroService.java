@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
-import br.com.fabioalvaro.sorteiocore.dominio.Jogador;
-import br.com.fabioalvaro.sorteiocore.dominio.MovimentoFinanceiro;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Jogador;
+import br.com.fabioalvaro.sorteiocore.model.MovimentoFinanceiro;
 import br.com.fabioalvaro.sorteiocore.repository.MovimentoFinanceiroRepository;
 
 @Service

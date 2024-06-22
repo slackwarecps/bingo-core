@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
 
 public interface CartelaRepository extends MongoRepository<Cartela, String> {
 

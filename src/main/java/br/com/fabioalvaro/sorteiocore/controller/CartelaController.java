@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
-import br.com.fabioalvaro.sorteiocore.dominio.Jogador;
-import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
-import br.com.fabioalvaro.sorteiocore.dominio.Vendedor;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.request.CartelaDTO;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.response.CartelaResponseDTO;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Jogador;
+import br.com.fabioalvaro.sorteiocore.model.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.Vendedor;
+import br.com.fabioalvaro.sorteiocore.model.dto.request.CartelaDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.CartelaResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
 import br.com.fabioalvaro.sorteiocore.service.JogadorService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;

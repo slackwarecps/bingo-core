@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.fabioalvaro.sorteiocore.config.ParametrosConfig;
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
-import br.com.fabioalvaro.sorteiocore.dominio.RandomNumbers;
-import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.RandomNumbers;
+import br.com.fabioalvaro.sorteiocore.model.Sorteio;
 import br.com.fabioalvaro.sorteiocore.repository.CartelaRepository;
 import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
 

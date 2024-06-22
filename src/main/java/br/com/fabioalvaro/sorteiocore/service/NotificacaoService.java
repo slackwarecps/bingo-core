@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
-import br.com.fabioalvaro.sorteiocore.dominio.Notificacao;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Notificacao;
 import br.com.fabioalvaro.sorteiocore.repository.NotificacaoRepository;
 
 @Service

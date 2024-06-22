@@ -1,7 +1,6 @@
-package br.com.fabioalvaro.sorteiocore.dominio;
+package br.com.fabioalvaro.sorteiocore.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,21 +10,23 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "tira_teima")
+@Document(collection = "movimentoFinanceiro")
 @Data
-public class Tirateima {
+@ToString
+public class MovimentoFinanceiro {
     @Id
     private String id;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
+    private String mensagem;
+    private String tipo;
+    private Double valor;
+    private String origem;
+    private String destino;
 
-    private String sorteioId;
-    private String vencedorId;
-    private String observacao;
-    private String modo; // manual, automatico
-    private List<Jogador> participantes;
 }

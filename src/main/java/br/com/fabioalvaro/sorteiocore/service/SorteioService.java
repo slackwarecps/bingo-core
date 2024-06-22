@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
-import br.com.fabioalvaro.sorteiocore.dominio.Linha;
-import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.response.CartelaNotificadosDTO;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioNotificadosDTO;
-import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioResponseDTO;
-import br.com.fabioalvaro.sorteiocore.dominio.enums.TipoSorteioEnum;
-import br.com.fabioalvaro.sorteiocore.dominio.enums.TiraTeimaEnum;
 import br.com.fabioalvaro.sorteiocore.mapper.SorteioMapper;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Linha;
+import br.com.fabioalvaro.sorteiocore.model.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.CartelaNotificadosDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioMinimoDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioNotificadosDTO;
+import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioResponseDTO;
+import br.com.fabioalvaro.sorteiocore.model.enums.TipoSorteioEnum;
+import br.com.fabioalvaro.sorteiocore.model.enums.TiraTeimaEnum;
 import br.com.fabioalvaro.sorteiocore.repository.CartelaRepository;
 import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
 
@@ -40,6 +42,9 @@ public class SorteioService {
 
     @Autowired
     private CartelaService cartelaService;
+
+    @Autowired
+    private SorteioMapper sorteioMapper;
 
     public Sorteio adicionarSorteio(Sorteio sorteio) {
         LocalDateTime created = LocalDateTime.now();
@@ -145,9 +150,9 @@ public class SorteioService {
         if (sorteioLocalizado.isPresent()) {
 
             SorteioNotificadosDTO sorteioNotificadosDTO = new SorteioNotificadosDTO();
-            sorteioNotificadosDTO.setSorteioId(sorteioLocalizado.get().getId());
-            sorteioNotificadosDTO.setLocal(sorteioLocalizado.get().getLocal());
-            sorteioNotificadosDTO.setSorteio(sorteioLocalizado.get());
+            sorteioNotificadosDTO.setId(sorteioLocalizado.get().getId());
+            // sorteioNotificadosDTO.setLocal(sorteioLocalizado.get().getLocal());
+            // sorteioNotificadosDTO.setSorteio(sorteioLocalizado.get());
             List<CartelaNotificadosDTO> listaCartelaNotificadosDTO = new ArrayList<>();
 
             //
@@ -433,6 +438,17 @@ public class SorteioService {
         listaDeCartelas = cartelaService.buscarCartelaPorSorteioId(sorteioId);
 
         return listaDeCartelas;
+    }
+
+    // Novo método para buscar todos os sorteios no repositório
+    public List<Sorteio> buscaTodos() {
+        return sorteioRepository.findAll();
+    }
+
+    public List<SorteioMinimoDTO> buscaTodosMinimosDto() {
+        return sorteioRepository.findAll().stream()
+                .map(sorteioMapper::sorteioToMinimoDTO)
+                .collect(Collectors.toList());
     }
 
 }

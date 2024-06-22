@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Notificacao;
+import br.com.fabioalvaro.sorteiocore.model.Notificacao;
 import br.com.fabioalvaro.sorteiocore.service.NotificacaoService;
 
 @RestController

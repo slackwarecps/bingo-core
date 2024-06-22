@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Cartela;
 
 public class CartelaServiceTest {
     @Mock

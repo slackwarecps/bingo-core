@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.dominio.dto.response;
+package br.com.fabioalvaro.sorteiocore.model.dto.response;
 
 import java.util.List;
 

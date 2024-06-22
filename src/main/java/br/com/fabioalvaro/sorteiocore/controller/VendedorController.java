@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fabioalvaro.sorteiocore.dominio.Vendedor;
+import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.service.VendedorService;
 
 @RestController

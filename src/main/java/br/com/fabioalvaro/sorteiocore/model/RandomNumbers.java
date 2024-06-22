@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.dominio;
+package br.com.fabioalvaro.sorteiocore.model;
 
 import java.util.ArrayList;
 import java.util.Collections;

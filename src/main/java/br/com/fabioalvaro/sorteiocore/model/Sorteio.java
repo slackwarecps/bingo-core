@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.dominio;
+package br.com.fabioalvaro.sorteiocore.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import br.com.fabioalvaro.sorteiocore.dominio.enums.TipoSorteioEnum;
-import br.com.fabioalvaro.sorteiocore.dominio.enums.TiraTeimaEnum;
+import br.com.fabioalvaro.sorteiocore.model.enums.TipoSorteioEnum;
+import br.com.fabioalvaro.sorteiocore.model.enums.TiraTeimaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
