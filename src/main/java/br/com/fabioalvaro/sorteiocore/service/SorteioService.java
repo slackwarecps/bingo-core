@@ -8,18 +8,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import br.com.fabioalvaro.sorteiocore.dominio.Cartela;
 import br.com.fabioalvaro.sorteiocore.dominio.Linha;
 import br.com.fabioalvaro.sorteiocore.dominio.Sorteio;
+import br.com.fabioalvaro.sorteiocore.dominio.dto.response.CartelaNotificadosDTO;
+import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioNotificadosDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.dto.response.SorteioResponseDTO;
 import br.com.fabioalvaro.sorteiocore.dominio.enums.TipoSorteioEnum;
 import br.com.fabioalvaro.sorteiocore.dominio.enums.TiraTeimaEnum;
+import br.com.fabioalvaro.sorteiocore.mapper.SorteioMapper;
 import br.com.fabioalvaro.sorteiocore.repository.CartelaRepository;
 import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
 
@@ -27,12 +30,13 @@ import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
 public class SorteioService {
     private static final Logger logger = LoggerFactory.getLogger(SorteioService.class);
 
-    private ModelMapper modelMapperSorteio = new ModelMapper();
-
     @Autowired
     private SorteioRepository sorteioRepository;
     @Autowired
     private CartelaRepository cartelaRepository;
+
+    @Autowired
+    private NotificacaoService notificacaoService;
 
     @Autowired
     private CartelaService cartelaService;
@@ -54,13 +58,21 @@ public class SorteioService {
         return sorteioRepository.findById(id);
     }
 
-    // Sorteio >> SorteioResponseDTO
-    public SorteioResponseDTO mapeiaParaSorteioResponseDTO(Sorteio sorteio) {
-        return modelMapperSorteio.map(sorteio, SorteioResponseDTO.class);
+    // Criado pelo quick command
+    // Stackspot AI
+    /**
+     * Mapeia um objeto Sorteio para um objeto SorteioResponseDTO.
+     *
+     * @param sorteio o objeto Sorteio a ser mapeado
+     * @return o objeto SorteioResponseDTO resultante do mapeamento
+     */
+    public SorteioResponseDTO mapeiaParaSorteioResponseDTO(@NonNull Sorteio sorteio) {
+
+        return SorteioMapper.INSTANCE.sorteioResponseDTO(sorteio);
     }
 
     // Sorteia uma bola
-    public void sorteiaBola(Sorteio sorteio, List<Cartela> cartelasDoSorteio) {
+    public int sorteiaBola(Sorteio sorteio, List<Cartela> cartelasDoSorteio) {
         logger.info("    ");
         logger.info("    ");
         logger.info("    ");
@@ -73,7 +85,7 @@ public class SorteioService {
         if (sorteioEncerrado == false) {
             Integer numero_sorteado = sorteiaMaisUmaBolinhaNoSorteio(sorteio);
             // 03 ALGUEM GANHOU??
-            Boolean cartelaVencedora = false;
+            Boolean temCartelaVencedora = false;
             List<String> ListaDeCartelasCheiasVencedoras = new ArrayList<>();
 
             for (Cartela cartela : cartelasDoSorteio) {
@@ -85,12 +97,13 @@ public class SorteioService {
                 // quantidade de bolas sorteadas é igual ou maior que 15
                 if (sorteio.getNumeros_sorteados_qtd() >= 15) {
                     logger.info(" Analise de Cartela Cheia=ON qtd={}", sorteio.getNumeros_sorteados_qtd());
-                    cartelaVencedora = cartelaCheiaganhou(sorteio, cartela);
-                    if (cartelaVencedora) {
+                    Boolean ganhouCheia = cartelaCheiaganhou(sorteio, cartela);
+                    if (ganhouCheia) {
                         ListaDeCartelasCheiasVencedoras.add(cartela.getId());
                         sorteio.setGanharamFull((sorteio.getGanharamFull() + 1));
                         cartela.setGanhouCheia(true);
                         cartelaRepository.save(cartela);
+                        temCartelaVencedora = true;
 
                     }
                 }
@@ -99,15 +112,16 @@ public class SorteioService {
             logger.info(" Cartelas Vencedoras Cheia qtd={}", ListaDeCartelasCheiasVencedoras);
 
             // 99 - FIM DO SORTEIO?
-            if (numero_sorteado == -1 || sorteio.getNumeros_sorteados_qtd() == 75 || cartelaVencedora == true) {
+            if (numero_sorteado == -1 || sorteio.getNumeros_sorteados_qtd() == 75 || temCartelaVencedora == true) {
                 logger.info("99 - FIM DO SORTEIO");
                 // Finaliza e Totaliza o Sorteio encerrar o sorteio
                 sorteio.setStatus("ENCERRADO");
                 sorteioRepository.save(sorteio);
                 // @TODO NOTIFICA DONO DAS CARTELAS VENCEDORAS
+
                 notificaVencedores(sorteio);
 
-                return;
+                return -1;
 
             }
             logger.info("  ***************************************************************************  ");
@@ -116,16 +130,47 @@ public class SorteioService {
             logger.info("    ");
             logger.info("    ");
             logger.info("    ");
+            return 0;
+
         } else {
             logger.info("99 - Sorteio ja Encerrado!!!");
+            return 99;
         }
 
     }
 
-    private void notificaVencedores(Sorteio sorteio) {
-        // 
-        int ganhadoresQuadraQtd = sorteio.getGanharamQuadra();
-        
+    public SorteioNotificadosDTO notificaVencedores(Sorteio sorteio) {
+
+        Optional<Sorteio> sorteioLocalizado = this.buscarSorteioPorId(sorteio.getId());
+        if (sorteioLocalizado.isPresent()) {
+
+            SorteioNotificadosDTO sorteioNotificadosDTO = new SorteioNotificadosDTO();
+            sorteioNotificadosDTO.setSorteioId(sorteioLocalizado.get().getId());
+            sorteioNotificadosDTO.setLocal(sorteioLocalizado.get().getLocal());
+            sorteioNotificadosDTO.setSorteio(sorteioLocalizado.get());
+            List<CartelaNotificadosDTO> listaCartelaNotificadosDTO = new ArrayList<>();
+
+            //
+            List<Cartela> listaDeCartelas = cartelaService.buscarCartelasGanhouQuadraPorSorteioId(sorteio.getId());
+            for (Cartela cartela : listaDeCartelas) {
+                String mensagem = "Parabéns! Sua cartela " + cartela.getId() + " foi premiada!";
+                notificacaoService.notificaCartela(cartela, mensagem);
+
+                CartelaNotificadosDTO cartelaDTO = new CartelaNotificadosDTO();
+                cartelaDTO.setCartelaId(cartela.getId());
+                cartelaDTO.setJogadorId(cartela.getJogadorId());
+                cartelaDTO.setLinha1(cartela.getLinha01());
+                cartelaDTO.setLinha2(cartela.getLinha02());
+                cartelaDTO.setLinha3(cartela.getLinha03());
+
+                listaCartelaNotificadosDTO.add(cartelaDTO);
+            }
+            sorteioNotificadosDTO.setListaDeCartelas(listaCartelaNotificadosDTO);
+
+            return sorteioNotificadosDTO;
+
+        }
+        return null;
 
     }
 
@@ -163,11 +208,15 @@ public class SorteioService {
         // processa linhas QUADRA
         if (linhaganhou(sorteio, minhaLinha3, "QUADRA", cartela)) {
             sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
+            cartela.setGanhouQuadra(true);
+            cartelaRepository.save(cartela);
 
         }
         // processa linha QUINA
         if (linhaganhou(sorteio, minhaLinha3, "QUINA", cartela)) {
             sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
+            cartela.setGanhouQuina(true);
+            cartelaRepository.save(cartela);
 
         }
         sorteioRepository.save(sorteio);
@@ -186,10 +235,14 @@ public class SorteioService {
         // processa linhas QUADRA
         if (linhaganhou(sorteio, minhaLinha2, "QUADRA", cartela)) {
             sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
+            cartela.setGanhouQuadra(true);
+            cartelaRepository.save(cartela);
         }
         // processa linha QUINA
         if (linhaganhou(sorteio, minhaLinha2, "QUINA", cartela)) {
             sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
+            cartela.setGanhouQuina(true);
+            cartelaRepository.save(cartela);
         }
         sorteioRepository.save(sorteio);
     }
@@ -201,15 +254,29 @@ public class SorteioService {
         Linha minhaLinha1 = new Linha();
         minhaLinha1.setLinha(cartela.getLinha01());
         minhaLinha1.setGanhouQuadra(cartela.getGanhouQuadra());
-        minhaLinha1.setGanhouQuina(cartela.getGanhouQuina());
+
+        if (cartela.getGanhouQuadra().equals(null))
+            minhaLinha1.setGanhouQuadra(false);
+        else
+            minhaLinha1.setGanhouQuadra(cartela.getGanhouQuadra());
+
+        if (cartela.getGanhouQuina().equals(null))
+            minhaLinha1.setGanhouQuina(false);
+        else
+            minhaLinha1.setGanhouQuina(cartela.getGanhouQuina());
+
         // logger.info(minhaLinha1.toString());
         // processa linhas QUADRA
         if (linhaganhou(sorteio, minhaLinha1, "QUADRA", cartela)) {
             sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
+            cartela.setGanhouQuadra(true);
+            cartelaRepository.save(cartela);
         }
         // processa linha QUINA
         if (linhaganhou(sorteio, minhaLinha1, "QUINA", cartela)) {
             sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
+            cartela.setGanhouQuina(true);
+            cartelaRepository.save(cartela);
         }
         sorteioRepository.save(sorteio);
     }

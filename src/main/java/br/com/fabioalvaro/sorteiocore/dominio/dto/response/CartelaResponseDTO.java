@@ -24,5 +24,6 @@ public class CartelaResponseDTO {
     List<Integer> linha01;
     List<Integer> linha02;
     List<Integer> linha03;
+    private Double valor;
 
 }

@@ -12,4 +12,7 @@ public interface CartelaRepository extends MongoRepository<Cartela, String> {
     List<Cartela> findBySorteioId(String sorteioId);
 
     Optional<Cartela> findById(String id);
+
+    List<Cartela> findBySorteioIdAndGanhouQuadra(String sorteioId, boolean ganhouQuadra);
+
 }

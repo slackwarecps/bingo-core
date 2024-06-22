@@ -9,6 +9,16 @@ public class CartelaDTO {
     @NotBlank
     private String vendedorId;
 
+    private Double valor;
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
     public String getVendedorId() {
         return vendedorId;
     }

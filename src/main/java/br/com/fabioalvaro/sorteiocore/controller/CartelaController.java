@@ -54,6 +54,7 @@ public class CartelaController {
         cartela.setJogadorId(cartelaDTO.getJogadorId());
         cartela.setSorteioId(cartelaDTO.getSorteioId());
         cartela.setVendedorId(cartelaDTO.getVendedorId());
+        cartela.setValor(cartelaDTO.getValor());
         // Validar Sorteio
         Optional<Sorteio> sorteioLocalizado = sorteioService.buscarSorteioPorId(cartelaDTO.getSorteioId());
         // Validar Vendedor
@@ -93,6 +94,7 @@ public class CartelaController {
         responseDTO.setLinha01(savedCartela.getLinha01());
         responseDTO.setLinha02(savedCartela.getLinha02());
         responseDTO.setLinha03(savedCartela.getLinha03());
+        responseDTO.setValor(savedCartela.getValor());
 
         logger.info("cartela Gerada: {} ", savedCartela);
 

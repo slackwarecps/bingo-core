@@ -38,7 +38,6 @@ public class Cartela {
     @NotNull
     private String vendedorId;
 
-    @NotNull
     private Double valor; // valor da Cartela
     private Boolean ganhouQuadra;
     private Boolean ganhouQuina;
@@ -49,4 +48,5 @@ public class Cartela {
     private Double premioQuadra;// ganhou? sim/nao
     private Double premioQuina;// ganhou?
     private Double premioCheio;// ganhou?
+
 }

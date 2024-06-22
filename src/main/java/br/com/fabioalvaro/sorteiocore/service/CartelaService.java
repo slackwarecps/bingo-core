@@ -46,10 +46,6 @@ public class CartelaService {
     }
 
     public Cartela adicionarCartela(Cartela cartela) {
-        cartela.setCreatedAt(LocalDateTime.now());
-        cartela.setGanhouCheia(false);
-        cartela.setGanhouQuadra(false);
-        cartela.setGanhouQuina(false);
 
         // Adiciona Cartela ao Sorteio
         Optional<Sorteio> optionalSorteio = sorteioRepository.findById(cartela.getSorteioId());
@@ -58,7 +54,11 @@ public class CartelaService {
             sorteio.setCartelasQtd(sorteio.getCartelasQtd() + 1);
             sorteioRepository.save(sorteio); // Salva o sorteio atualizado
         }
-
+        cartela.setCreatedAt(LocalDateTime.now());
+        cartela.setGanhouCheia(false);
+        cartela.setGanhouQuadra(false);
+        cartela.setGanhouQuina(false);
+        cartela.setValor(cartela.getValor());
         return cartelaRepository.save(cartela);
     }
 
@@ -87,6 +87,10 @@ public class CartelaService {
 
     public List<Cartela> buscarCartelaPorSorteioId(String sorteioId) {
         return cartelaRepository.findBySorteioId(sorteioId);
+    }
+
+    public List<Cartela> buscarCartelasGanhouQuadraPorSorteioId(String sorteioId) {
+        return cartelaRepository.findBySorteioIdAndGanhouQuadra(sorteioId, true);
     }
 
     public Boolean premiarCartela(Cartela cartelaRetornada, double valor) {
