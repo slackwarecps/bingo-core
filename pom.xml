@@ -93,7 +93,12 @@
     </dependency>
 	<!-- Model Mapper -->
 
-
+	<!-- openfeign -->
+	<dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>4.1.2</version>
+	</dependency>
 
 
 	
