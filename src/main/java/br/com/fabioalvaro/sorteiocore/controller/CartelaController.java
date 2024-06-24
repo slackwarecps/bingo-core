@@ -27,6 +27,7 @@ import br.com.fabioalvaro.sorteiocore.service.CartelaService;
 import br.com.fabioalvaro.sorteiocore.service.JogadorService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 import br.com.fabioalvaro.sorteiocore.service.VendedorService;
+import br.com.fabioalvaro.sorteiocore.service.saldo.SaldoService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -42,6 +43,9 @@ public class CartelaController {
     @Autowired
     private JogadorService jogadorService;
 
+    @Autowired
+    private SaldoService saldoService;
+
     @PostMapping("/teste")
     public Cartela adicionarCartela2(@RequestBody Cartela cartela) {
         return cartelaService.adicionarCartela(cartela);
@@ -49,7 +53,14 @@ public class CartelaController {
 
     @PostMapping(produces = "application/json")
     public ResponseEntity<CartelaResponseDTO> adicionarCartela(@Valid @RequestBody CartelaDTO cartelaDTO) {
-        logger.error("[CartelaController: POST ]DTO: {}", cartelaDTO.toString());
+        logger.info("[CartelaController: POST ]DTO: {}", cartelaDTO.toString());
+
+        if (1 == 1) {
+
+            Double valor = saldoService.getSaldoDoJogador(cartelaDTO.getJogadorId());
+            logger.info("Saldo do Jogador {}", valor);
+        }
+
         Cartela cartela = new Cartela();
         cartela.setJogadorId(cartelaDTO.getJogadorId());
         cartela.setSorteioId(cartelaDTO.getSorteioId());
