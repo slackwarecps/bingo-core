@@ -2,12 +2,12 @@ package br.com.fabioalvaro.sorteiocore.service.saldo;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "saldo", url = "https://open-bingo.wiremockapi.cloud/")
 public interface SaldoClient {
 
-    @GetMapping("/saldo")
-    SaldoRespostaDTO getSaldoByJogadorId(@RequestParam("jogadorId") String jogadorId);
+    @GetMapping("/saldo/{jogadorId}")
+    SaldoRespostaDTO getSaldoByJogadorId(@PathVariable("jogadorId") String jogadorId);
 
 }

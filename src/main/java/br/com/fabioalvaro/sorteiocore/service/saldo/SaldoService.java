@@ -10,7 +10,7 @@ import br.com.fabioalvaro.sorteiocore.controller.CartelaController;
 @Service
 public class SaldoService {
     private static final Logger logger = LoggerFactory.getLogger(CartelaController.class);
-
+    private String JOGADOR_ID = "666eba2b6ec8517e8b884818";
     @Autowired
     private SaldoClient client;
 
@@ -18,7 +18,8 @@ public class SaldoService {
 
         Double retorno = 0.00;
 
-        SaldoRespostaDTO saldo = client.getSaldoByJogadorId(jogadorId);
+        // @TODO Precisa depois remover o hardcoded
+        SaldoRespostaDTO saldo = client.getSaldoByJogadorId(JOGADOR_ID);
 
         retorno = saldo.getSaldo();
         return retorno;
