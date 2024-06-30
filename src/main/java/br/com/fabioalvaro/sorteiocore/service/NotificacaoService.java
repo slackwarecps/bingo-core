@@ -50,4 +50,14 @@ public class NotificacaoService {
         // 'notificaCartela'");
     }
 
+    // Novo método para procurar uma notificação pelo ID
+    public Notificacao findById(String id) {
+        Optional<Notificacao> optionalNotificacao = notificacaoRepository.findById(id);
+        if (optionalNotificacao.isPresent()) {
+            return optionalNotificacao.get();
+        } else {
+            return null;
+        }
+    }
+
 }
