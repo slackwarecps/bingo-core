@@ -122,12 +122,12 @@ public class CartelaController {
         return cartelaService.buscarCartelaPorId(id);
     }
 
-    @PostMapping("/premiar")
-    public String premiarCartela(@RequestBody Cartela cartela) {
-        logger.info("cartela {}", cartela.getId());
-        Optional<Cartela> cartelaRetornada = cartelaService.buscarCartelaPorId(cartela.getId());
+    @PostMapping("/premiar/{cartelaId}")
+    public String premiarCartela(@PathVariable String cartelaId) {
+        logger.info("cartela {}", cartelaId);
+        Optional<Cartela> cartelaRetornada = cartelaService.buscarCartelaPorId(cartelaId);
         if (cartelaRetornada.isPresent()) {
-            cartelaService.premiarCartela(cartelaRetornada.get(), cartela.getValor());
+            cartelaService.premiarCartela(cartelaRetornada.get(), 1000);
         }
 
         return "OK";

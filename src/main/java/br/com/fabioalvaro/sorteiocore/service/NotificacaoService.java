@@ -46,8 +46,7 @@ public class NotificacaoService {
         notificacao.setJogadorId(cartela.getJogadorId());
         notificacao.setMensagem(mensagem);
         this.save(notificacao);
-        // throw new UnsupportedOperationException("Unimplemented method
-        // 'notificaCartela'");
+
     }
 
     // Novo método para procurar uma notificação pelo ID
