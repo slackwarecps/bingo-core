@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fabioalvaro.sorteiocore.model.Jogador;
-import br.com.fabioalvaro.sorteiocore.service.JogadorService;
+import br.com.fabioalvaro.sorteiocore.service.jogador.JogadorService;
 
 @RestController
 @RequestMapping("/jogador")

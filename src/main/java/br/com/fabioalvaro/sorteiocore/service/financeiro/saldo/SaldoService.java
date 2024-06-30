@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.service.saldo;
+package br.com.fabioalvaro.sorteiocore.service.financeiro.saldo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

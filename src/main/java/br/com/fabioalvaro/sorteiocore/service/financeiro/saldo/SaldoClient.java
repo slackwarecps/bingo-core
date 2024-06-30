@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.service.saldo;
+package br.com.fabioalvaro.sorteiocore.service.financeiro.saldo;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

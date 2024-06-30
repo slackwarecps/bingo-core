@@ -13,6 +13,7 @@ import br.com.fabioalvaro.sorteiocore.model.Cartela;
 import br.com.fabioalvaro.sorteiocore.model.Jogador;
 import br.com.fabioalvaro.sorteiocore.model.MovimentoFinanceiro;
 import br.com.fabioalvaro.sorteiocore.repository.MovimentoFinanceiroRepository;
+import br.com.fabioalvaro.sorteiocore.service.jogador.JogadorService;
 
 @Service
 public class MovimentoFinanceiroService {
@@ -72,5 +73,9 @@ public class MovimentoFinanceiroService {
             return false;
         }
 
+    }
+
+    public MovimentoFinanceiro saveMovimentoFinanceiro(MovimentoFinanceiro movimentoFinanceiro) {
+        return movimentoFinanceiroRepository.save(movimentoFinanceiro);
     }
 }

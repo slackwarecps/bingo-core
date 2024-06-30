@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.service;
+package br.com.fabioalvaro.sorteiocore.service.jogador;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,5 +35,9 @@ public class JogadorService {
 
     public void deleteById(String id) {
         jogadorRepository.deleteById(id);
+    }
+
+    public Jogador updateJogador(Jogador jogador) {
+        return jogadorRepository.save(jogador);
     }
 }

@@ -24,10 +24,10 @@ import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.model.dto.request.CartelaDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.CartelaResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
-import br.com.fabioalvaro.sorteiocore.service.JogadorService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 import br.com.fabioalvaro.sorteiocore.service.VendedorService;
-import br.com.fabioalvaro.sorteiocore.service.saldo.SaldoService;
+import br.com.fabioalvaro.sorteiocore.service.financeiro.saldo.SaldoService;
+import br.com.fabioalvaro.sorteiocore.service.jogador.JogadorService;
 import jakarta.validation.Valid;
 
 @RestController
