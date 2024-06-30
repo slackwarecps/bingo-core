@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.model;
+package br.com.fabioalvaro.sorteiocore.model.jogo;
 
 import java.time.LocalDateTime;
 

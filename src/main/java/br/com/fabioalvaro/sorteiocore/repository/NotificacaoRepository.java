@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import br.com.fabioalvaro.sorteiocore.model.Notificacao;
+import br.com.fabioalvaro.sorteiocore.model.jogo.Notificacao;
 
 public interface NotificacaoRepository extends MongoRepository<Notificacao, String> {
     List<Notificacao> findByJogadorId(String jogadorId);
