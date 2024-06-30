@@ -18,8 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.fabioalvaro.sorteiocore.model.Cartela;
 import br.com.fabioalvaro.sorteiocore.model.Jogador;
-import br.com.fabioalvaro.sorteiocore.model.MovimentoFinanceiro;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.financeiro.MovimentoFinanceiro;
+import br.com.fabioalvaro.sorteiocore.service.financeiro.MovimentoFinanceiroService;
 import br.com.fabioalvaro.sorteiocore.service.jogador.JogadorService;
 import br.com.fabioalvaro.sorteiocore.service.jogador.PremiarJogador;
 

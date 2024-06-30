@@ -24,6 +24,7 @@ import br.com.fabioalvaro.sorteiocore.model.Linha;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
 import br.com.fabioalvaro.sorteiocore.repository.CartelaRepository;
 import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
+import br.com.fabioalvaro.sorteiocore.service.sorteio.SorteioService;
 
 @SpringBootTest
 public class LinhaTest {

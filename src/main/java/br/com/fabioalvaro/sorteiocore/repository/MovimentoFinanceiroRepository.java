@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.fabioalvaro.sorteiocore.model.MovimentoFinanceiro;
+import br.com.fabioalvaro.sorteiocore.model.financeiro.MovimentoFinanceiro;
 
 @Repository
 public interface MovimentoFinanceiroRepository extends MongoRepository<MovimentoFinanceiro, String> {

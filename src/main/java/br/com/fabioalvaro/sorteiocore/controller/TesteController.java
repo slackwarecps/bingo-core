@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fabioalvaro.sorteiocore.model.Linha;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
-import br.com.fabioalvaro.sorteiocore.service.SorteioService;
+import br.com.fabioalvaro.sorteiocore.service.sorteio.SorteioService;
 
 @RestController
 @RequestMapping("/teste")

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.fabioalvaro.sorteiocore.model.Cartela;
 import br.com.fabioalvaro.sorteiocore.model.Jogador;
-import br.com.fabioalvaro.sorteiocore.model.MovimentoFinanceiro;
-import br.com.fabioalvaro.sorteiocore.service.MovimentoFinanceiroService;
+import br.com.fabioalvaro.sorteiocore.model.financeiro.MovimentoFinanceiro;
+import br.com.fabioalvaro.sorteiocore.service.financeiro.MovimentoFinanceiroService;
 
 @Service
 public class PremiarJogador {

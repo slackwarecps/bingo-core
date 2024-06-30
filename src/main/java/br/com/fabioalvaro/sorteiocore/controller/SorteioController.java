@@ -23,7 +23,7 @@ import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioMinimoDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioNotificadosDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
-import br.com.fabioalvaro.sorteiocore.service.SorteioService;
+import br.com.fabioalvaro.sorteiocore.service.sorteio.SorteioService;
 
 @RestController
 @RequestMapping("/sorteio")

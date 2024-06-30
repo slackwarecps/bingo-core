@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.service;
+package br.com.fabioalvaro.sorteiocore.service.sorteio;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +27,8 @@ import br.com.fabioalvaro.sorteiocore.model.enums.TipoSorteioEnum;
 import br.com.fabioalvaro.sorteiocore.model.enums.TiraTeimaEnum;
 import br.com.fabioalvaro.sorteiocore.repository.CartelaRepository;
 import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
+import br.com.fabioalvaro.sorteiocore.service.CartelaService;
+import br.com.fabioalvaro.sorteiocore.service.NotificacaoService;
 
 @Service
 public class SorteioService {

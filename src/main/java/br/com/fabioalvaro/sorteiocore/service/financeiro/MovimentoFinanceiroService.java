@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.service;
+package br.com.fabioalvaro.sorteiocore.service.financeiro;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.fabioalvaro.sorteiocore.model.Cartela;
 import br.com.fabioalvaro.sorteiocore.model.Jogador;
-import br.com.fabioalvaro.sorteiocore.model.MovimentoFinanceiro;
+import br.com.fabioalvaro.sorteiocore.model.financeiro.MovimentoFinanceiro;
 import br.com.fabioalvaro.sorteiocore.repository.MovimentoFinanceiroRepository;
 import br.com.fabioalvaro.sorteiocore.service.jogador.JogadorService;
+import br.com.fabioalvaro.sorteiocore.service.sorteio.SorteioService;
 
 @Service
 public class MovimentoFinanceiroService {
