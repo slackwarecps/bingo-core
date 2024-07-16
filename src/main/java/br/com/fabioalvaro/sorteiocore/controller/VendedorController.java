@@ -26,6 +26,7 @@ public class VendedorController {
 
     @PostMapping
     public ResponseEntity<Vendedor> createVendedor(@RequestBody Vendedor vendedor) {
+        vendedor.setId(null);
         Vendedor createdVendedor = vendedorService.saveVendedor(vendedor);
         return ResponseEntity.ok(createdVendedor);
     }

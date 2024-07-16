@@ -29,6 +29,8 @@ Z - Indicador de fuso horário UTC (pode ser substituído por um deslocamento de
 ## Documentacao da API 
 Para acessar a documentação da API, execute o projeto e abra o Swagger:
 ```
+export MONGO_DB_USERNAME=rootuser
+export MONGO_DB_PASSWORD=rootpass
 $ cd raiz-do-projeto
 $ mvn spring-boot:run
 ```
