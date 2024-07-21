@@ -14,7 +14,7 @@ import br.com.fabioalvaro.sorteiocore.model.Sorteio;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 
 @RestController
-@RequestMapping("/teste")
+@RequestMapping("${bingo.urlPrefixo}/teste")
 public class TesteController {
     private static final Logger logger = LoggerFactory.getLogger(SorteioService.class);
 

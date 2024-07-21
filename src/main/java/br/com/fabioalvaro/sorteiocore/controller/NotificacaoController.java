@@ -15,7 +15,7 @@ import br.com.fabioalvaro.sorteiocore.model.Notificacao;
 import br.com.fabioalvaro.sorteiocore.service.NotificacaoService;
 
 @RestController
-@RequestMapping("/notificacao")
+@RequestMapping("${bingo.urlPrefixo}/notificacao")
 public class NotificacaoController {
 
     @Autowired

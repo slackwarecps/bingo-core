@@ -18,7 +18,7 @@ import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.service.VendedorService;
 
 @RestController
-@RequestMapping("/vendedor")
+@RequestMapping("${bingo.urlPrefixo}/vendedor")
 public class VendedorController {
 
     @Autowired

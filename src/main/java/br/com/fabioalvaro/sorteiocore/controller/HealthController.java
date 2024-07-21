@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/sorteio-core/v1")
+@RequestMapping("${bingo.urlPrefixo}")
 public class HealthController {
 
 
