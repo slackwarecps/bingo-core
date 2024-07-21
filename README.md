@@ -86,182 +86,22 @@ usuario admin:pass
 http://localhost:8081/db/bingo/cartela
 
 
-##  Compra de Cartelas
-História: Como um jogador, eu quero comprar cartelas de bingo para participar dos jogos.
-Critérios de Aceitação:
-O jogador pode visualizar as cartelas disponíveis para compra.
-O jogador pode selecionar e comprar cartelas.
-O jogador recebe uma confirmação de compra.
+# Gerar o build do projeto
 
-## Título: Compra de Cartelas de Bingo
+'''
+mvn clean install -DskipTests
 
-História: Como um jogador, eu quero comprar cartelas de bingo para participar dos jogos.
+export MONGO_DB_DATABASE=bingo
+export MONGO_DB_URI=qweqweqweqweqweqweqwew-uri
+echo $MONGO_DB_DATABASE   
+echo $MONGO_DB_URI   
 
-Critérios de Aceitação:
+docker build . -t bingocore:latest
 
-O jogador pode visualizar as cartelas disponíveis para compra.
-O jogador pode selecionar e comprar cartelas.
-O jogador recebe uma confirmação de compra.
-Requisitos Funcionais:
-
-Visualização de Cartelas:
-
-O sistema deve exibir uma lista de cartelas de bingo disponíveis para compra.
-Cada cartela deve mostrar informações como preço, número de série e design.
-Seleção e Compra de Cartelas:
-
-O jogador deve poder selecionar uma ou mais cartelas para compra.
-O sistema deve permitir que o jogador adicione cartelas ao carrinho de compras.
-O jogador deve poder revisar o carrinho de compras antes de finalizar a compra.
-O sistema deve processar o pagamento através de métodos de pagamento suportados (ex: cartão de crédito, PayPal).
-Confirmação de Compra:
-
-Após a compra, o sistema deve exibir uma mensagem de confirmação ao jogador.
-O sistema deve enviar um e-mail de confirmação ao jogador com os detalhes da compra.
-As cartelas compradas devem ser adicionadas à conta do jogador para uso em jogos futuros.
-Requisitos Não Funcionais:
-
-Desempenho:
-
-O sistema deve carregar a lista de cartelas disponíveis em no máximo 2 segundos.
-O processo de compra deve ser concluído em no máximo 5 segundos após a confirmação do pagamento.
-Segurança:
-
-Todas as transações de pagamento devem ser realizadas em um ambiente seguro (HTTPS).
-Os dados de pagamento do jogador devem ser protegidos e não armazenados no sistema.
-Usabilidade:
-
-A interface de compra deve ser intuitiva e fácil de usar, com instruções claras em cada etapa do processo.
-O sistema deve ser acessível em dispositivos móveis e desktops.
-Confiabilidade:
-
-O sistema deve ter uma disponibilidade de 99.9% para garantir que os jogadores possam comprar cartelas a qualquer momento.
-O sistema deve registrar todas as transações de compra para fins de auditoria.
-Tarefas:
-
-Desenvolver a interface de visualização de cartelas.
-Implementar a funcionalidade de seleção e adição de cartelas ao carrinho.
-Integrar o sistema de pagamento.
-Implementar a funcionalidade de confirmação de compra e envio de e-mail.
-Testar a funcionalidade de compra de cartelas em diferentes dispositivos e navegadores.
-Realizar testes de segurança e desempenho.
+docker run --name sorteio-container123 -e MONGO_DB_DATABASE=$MONGO_DB_DATABASE -e MONGO_DB_URI=$MONGO_DB_URI -p 8080:8080 sorteiocore:latest
 
 
-## Regras do bingo
-
-As cartelas possuem numeros aleatorios entre 1 a 75.
-Cada Cartela possui 15 numeros que não se repetem em cada cartela.
-Cada Cartela tem 3 linhas de 5 numeros em cada.
-O sorteio deve ser encerrado quando 1 ou mais pessoas conseguirem preencher os 15 numeros de uma cartela.
-É possivel que 1 ou mais pessoas consigam ganhar com cartela cheia.
-
-Uma linha de uma cartela nao pode ganhar a quadra se ja ganhou a quadra.
-Uma linha de uma cartela  nao pode ganhar a Quina se ja ganhou a quina.
-Uma cartela pode ganhar 1 quadra, 1 quina e 1 cartela cheia.
+docker run --name sorteio-container123 -e MONGO_DB_DATABASE=$MONGO_DB_DATABASE -e MONGO_DB_URI=$MONGO_DB_URI -p 8080:8080 sorteiocore:latest
 
 
-## prompt
-
-Configura um contêiner Localstack para simular serviços AWS localmente, mapeando portas e montando volumes para persistência e inicialização.
-
-## Prompt
-
-1 Crie arquivos service e repository para persistir a classe Movimento Financeiro no mongodb.
-2 A classe Service deve permitir buscar Movimento Financeiro por uma string jogadorId
-classe="""
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Document(collection = "movimentoFinanceiro")
-@Data
-@ToString
-public class MovimentoFinanceiro {
-    @Id
-    private String id;
-    private LocalDateTime createdAt;
-    private String mensagem;
-    private String tipo;
-    private Double valor;
-    private String origem;
-    private String destino;
-
-}"""
-
-
-## prompt
-refatore o metodo abaixo para receber uma cartela e adicionar um valor de 2,00 no movimento financeiro com os dados do jogador que estao na cartela.
-
-metodo=
-"""
- @PostMapping("/premiar")
-    public String premiarCartela(@RequestBody Cartela cartela) {
-        return cartelaService.geraNumerosRandomicos().toString();
-    }
-"""
-
-
-## Prompt
-
-1 Crie arquivos service e repository para persistir a classe Notificacao no mongodb.
-2 A classe Service deve permitir buscar as Notificacoes por uma string jogadorId
-3 Crie uma classe controller para buscar as notificacoes por uma string jogadorId
-
-classe="""
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@ToString
-@Document(collection = "notificacao")
-public class Notificacao {
-    @Id
-    String id;
-    @NotNull
-    LocalDateTime createdAt;
-    @NotNull
-    String mensagem;
-    @NotNull
-    String jogadorId;
-    Boolean visualizado;
-}
-
-"""
-
-# PROMPT
-Crie uma classe de Mapeamento do MapStruct chamada CartelaMapper baseado no codigo abaixo:
-
-"""
-public class Cartela {
-    @Id
-    private String id;
-
-    private LocalDateTime createdAt;
-    @NotNull
-    private String jogadorId;
-
-    List<Integer> linha01;
-    List<Integer> linha02;
-    List<Integer> linha03;
-
-    @NotNull
-    private String sorteioId;
-    @NotNull
-    private String vendedorId;
-
-    private Double valor; // valor da Cartela
-    private Boolean ganhouQuadra;
-    private Boolean ganhouQuina;
-    private Boolean ganhouCheia;
-    private String tiraTeimaId;// cartela participou de tirateima?
-    private String status; // valores possíveis: "ativa", "cancelada", "
-
-    private Double premioQuadra;// ganhou? sim/nao
-    private Double premioQuina;// ganhou?
-    private Double premioCheio;// ganhou?
-
-}
-"""
+ ''''
