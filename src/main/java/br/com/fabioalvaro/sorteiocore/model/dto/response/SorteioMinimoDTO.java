@@ -8,6 +8,8 @@ import lombok.Data;
 public class SorteioMinimoDTO {
     private String id;
     private String local;
+    private String nome;
     private LocalDateTime createAt;
+    private LocalDateTime updatedAt;
     private String status;
 }

@@ -26,7 +26,9 @@ public class Sorteio {
     @Id
     private String id;
     private LocalDateTime createAt;
+    private LocalDateTime updatedAt;
     private String local;// endereco
+    private String nome;
     private Long numeros_sorteados_qtd;
     private List<Integer> lista_numeros_sorteados;
     private TipoSorteioEnum tipoSorteio;// [FIXO,DINAMICO]
