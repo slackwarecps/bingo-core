@@ -110,6 +110,6 @@ docker run --name sorteio-container123 -e MONGO_DB_DATABASE=$MONGO_DB_DATABASE -
  ''' 
  mvn clean install -DskipTests
  docker build . -t fabioalvaro/sorteio-core:latest
- docker push fabioalvaro/sorteio-core:v1.0.0
+ docker push fabioalvaro/sorteio-core:latest
  
  '''
