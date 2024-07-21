@@ -96,7 +96,7 @@ export MONGO_DB_URI=qweqweqweqweqweqweqwew-uri
 echo $MONGO_DB_DATABASE   
 echo $MONGO_DB_URI   
 
-docker build . -t bingocore:latest
+docker build . -t fabioalvaro/sorteio-core:v1.0.0 -t fabioalvaro/sorteio-core:latest
 
 docker run --name sorteio-container123 -e MONGO_DB_DATABASE=$MONGO_DB_DATABASE -e MONGO_DB_URI=$MONGO_DB_URI -p 8080:8080 sorteiocore:latest
 
@@ -105,3 +105,9 @@ docker run --name sorteio-container123 -e MONGO_DB_DATABASE=$MONGO_DB_DATABASE -
 
 
  ''''
+
+ # GERAR IMAGE NO DOCKER HUB
+ ''' 
+ docker push fabioalvaro/sorteio-core:v1.0.0
+ 
+ '''
