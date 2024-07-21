@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Defina as variáveis de ambiente
-export MONGO_DB_DATABASE=bingo
-export MONGO_DB_URI=qweqweqweqweqweqweqwew-uri
 
 # Nome da imagem e tags
 IMAGE_NAME="fabioalvaro/sorteio-core"
