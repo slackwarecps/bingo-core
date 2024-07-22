@@ -99,6 +99,7 @@ public class SorteioController {
         sorteio.setUpdatedAt(LocalDateTime.now());
    
         sorteio.setLocal(sorteioDTO.getLocal());
+        sorteio.setNome(sorteioDTO.getNome());
 
         Sorteio savedSorteio = sorteioService.adicionarSorteio(sorteio);
 
