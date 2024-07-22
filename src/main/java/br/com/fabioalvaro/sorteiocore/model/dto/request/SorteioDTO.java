@@ -17,6 +17,7 @@ public class SorteioDTO {
     private String id;
     private LocalDateTime createAt;
     private String local;
+    private String nome;
     private Long numeros_sorteados_qtd;
     private List<Integer> lista_numeros_sorteados;
 

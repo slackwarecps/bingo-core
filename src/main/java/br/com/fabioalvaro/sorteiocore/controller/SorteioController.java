@@ -1,5 +1,6 @@
 package br.com.fabioalvaro.sorteiocore.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,8 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fabioalvaro.sorteiocore.mapper.SorteioMapper;
 import br.com.fabioalvaro.sorteiocore.model.Cartela;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.model.dto.request.SorteiaBolaDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.request.SorteioDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioMinimoDTO;
@@ -88,9 +93,11 @@ public class SorteioController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<SorteioResponseDTO> sorteiaBola(@RequestBody SorteioDTO sorteioDTO) {
+    public ResponseEntity<SorteioResponseDTO> criaSorteio(@RequestBody SorteioDTO sorteioDTO) {
         Sorteio sorteio = new Sorteio();
-        sorteio.setCreateAt(sorteioDTO.getCreateAt());
+        sorteio.setCreateAt(LocalDateTime.now());
+        sorteio.setUpdatedAt(LocalDateTime.now());
+   
         sorteio.setLocal(sorteioDTO.getLocal());
 
         Sorteio savedSorteio = sorteioService.adicionarSorteio(sorteio);
@@ -111,5 +118,32 @@ public class SorteioController {
 
         return sorteioService.buscaTodosMinimosDto();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Sorteio>> getSorteioById(@PathVariable String id) {
+        Optional<Sorteio> sorteio = sorteioService.buscarSorteioPorId(id);
+        return ResponseEntity.ok(sorteio);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Sorteio> atualizaSorteio(@PathVariable String id, @RequestBody SorteioDTO sorteioDTO) {
+        logger.info("Atualizando sorteio com id {}", id);
+
+       //mapeia o dto para entidade
+       Sorteio sorteio = SorteioMapper.INSTANCE.dtoParaSorteio(sorteioDTO);
+
+  
+
+        Sorteio updatedSorteio = sorteioService.atualizarSorteio(id, sorteio);
+        return ResponseEntity.ok(updatedSorteio);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSorteio(@PathVariable String id) {
+        sorteioService.removerSorteioPorId(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    
 
 }

@@ -12,13 +12,18 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.fabioalvaro.sorteiocore.mapper.SorteioMapper;
 import br.com.fabioalvaro.sorteiocore.model.Cartela;
 import br.com.fabioalvaro.sorteiocore.model.Linha;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
+import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.CartelaNotificadosDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioMinimoDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioNotificadosDTO;
@@ -54,14 +59,18 @@ public class SorteioService {
         sorteio.setGanharamQuadra(0);
         sorteio.setCartelasQtd(0);
         sorteio.setCreateAt(created);
+        sorteio.setUpdatedAt(LocalDateTime.now());
         sorteio.setStatus("ATIVO");
         sorteio.setNumeros_sorteados_qtd(0L);
+        
         return sorteioRepository.save(sorteio);
     }
 
     public Optional<Sorteio> buscarSorteioPorId(String id) {
         return sorteioRepository.findById(id);
     }
+
+  
 
     // Criado pelo quick command
     // Stackspot AI
@@ -449,6 +458,25 @@ public class SorteioService {
         return sorteioRepository.findAll().stream()
                 .map(sorteioMapper::sorteioToMinimoDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Sorteio atualizarSorteio(String id, Sorteio sorteioAtualizado) {
+        Optional<Sorteio> optionalSorteio = sorteioRepository.findById(id);
+        if (optionalSorteio.isPresent()) {
+            Sorteio sorteio = optionalSorteio.get();
+            sorteio.setNome(sorteioAtualizado.getNome());
+            sorteio.setLocal(sorteioAtualizado.getLocal());
+            sorteio.setUpdatedAt(LocalDateTime.now());
+            return sorteioRepository.save(sorteio);
+        } else {
+            return null;
+        }
+
+
+    }
+
+    public void removerSorteioPorId(String id) {
+        sorteioRepository.deleteById(id);
     }
 
 }
