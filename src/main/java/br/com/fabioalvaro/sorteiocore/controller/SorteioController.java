@@ -94,6 +94,10 @@ public class SorteioController {
 
     @PostMapping(produces = "application/json")
     public ResponseEntity<SorteioResponseDTO> criaSorteio(@RequestBody SorteioDTO sorteioDTO) {
+        if (sorteioDTO.getNome() == null || sorteioDTO.getLocal() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         Sorteio sorteio = new Sorteio();
         sorteio.setCreateAt(LocalDateTime.now());
         sorteio.setUpdatedAt(LocalDateTime.now());
