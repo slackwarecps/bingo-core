@@ -17,8 +17,8 @@ public class HealthController {
     public ResponseEntity<Map<String, String>> healthPadrao() {
         Map<String, String> resposta = new HashMap<>();
         resposta.put("status", "OK");
-        resposta.put("data", "22/07/2024 12:04");
-        resposta.put("message", "dor nas costas");
+        resposta.put("data", "22/07/2024 1422");
+        resposta.put("message", "depois do almoço");
         return ResponseEntity.ok(resposta);
     }
 }

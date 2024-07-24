@@ -133,6 +133,9 @@ public class SorteioController {
     @PutMapping("/{id}")
     public ResponseEntity<Sorteio> atualizaSorteio(@PathVariable String id, @RequestBody SorteioDTO sorteioDTO) {
         logger.info("Atualizando sorteio com id {}", id);
+        if (sorteioDTO.getNome() == null || sorteioDTO.getLocal() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
        //mapeia o dto para entidade
        Sorteio sorteio = SorteioMapper.INSTANCE.dtoParaSorteio(sorteioDTO);
