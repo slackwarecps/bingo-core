@@ -1,12 +1,14 @@
 package br.com.fabioalvaro.sorteiocore.model.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class CartelaDTO {
+    @NotNull(message = "jogadorId é obrigatorio.")
     private String jogadorId;
-    @NotBlank
+    @NotBlank(message = "sorteioId é obrigatorio.")
     private String sorteioId;
-    @NotBlank
+    @NotBlank(message = "vendedorId é obrigatorio.")
     private String vendedorId;
 
     private Double valor;

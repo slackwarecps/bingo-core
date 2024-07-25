@@ -29,6 +29,7 @@ import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioNotificadosDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.SorteioResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("${bingo.urlPrefixo}/sorteio")
@@ -93,7 +94,7 @@ public class SorteioController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<SorteioResponseDTO> criaSorteio(@RequestBody SorteioDTO sorteioDTO) {
+    public ResponseEntity<SorteioResponseDTO> criaSorteio(@Valid @RequestBody SorteioDTO sorteioDTO) {
         if (sorteioDTO.getNome() == null || sorteioDTO.getLocal() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

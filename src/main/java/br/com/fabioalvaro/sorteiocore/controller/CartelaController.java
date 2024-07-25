@@ -1,7 +1,9 @@
 package br.com.fabioalvaro.sorteiocore.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +21,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fabioalvaro.sorteiocore.model.Cartela;
+import br.com.fabioalvaro.sorteiocore.model.Device;
 import br.com.fabioalvaro.sorteiocore.model.Jogador;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
 import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.model.dto.request.CartelaDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.CartelaResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
+import br.com.fabioalvaro.sorteiocore.service.DeviceService;
 import br.com.fabioalvaro.sorteiocore.service.JogadorService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 import br.com.fabioalvaro.sorteiocore.service.VendedorService;
 import br.com.fabioalvaro.sorteiocore.service.saldo.SaldoService;
+import br.com.fabioalvaro.sorteiocore.utils.excessoes.ApiErrorMessage;
+import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.JogadorNaoExisteException;
+import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.SorteioNaoExisteException;
+import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.VendedorNaoExisteException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -51,10 +59,7 @@ public class CartelaController {
     @Autowired
     private SaldoService saldoService;
 
-    @PostMapping("/teste")
-    public Cartela adicionarCartela2(@RequestBody Cartela cartela) {
-        return cartelaService.adicionarCartela(cartela);
-    }
+
 
     @PostMapping(produces = "application/json")
     public ResponseEntity<CartelaResponseDTO> adicionarCartela(@Valid @RequestBody CartelaDTO cartelaDTO) {
@@ -81,17 +86,18 @@ public class CartelaController {
         if (sorteioLocalizado.isEmpty()) {
             // Sorteio não encontrado, retorne uma resposta de erro
             logger.error("[CartelaController: POST ]SorteioId nao localizado: {} ", cartelaDTO.getSorteioId());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new SorteioNaoExisteException();
+            //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (vendedorLocalizado.isEmpty()) {
             // Sorteio não encontrado, retorne uma resposta de erro
             logger.error("[CartelaController: POST ]vendedorId nao localizado: {} ", cartelaDTO.getVendedorId());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new VendedorNaoExisteException();
         }
         if (jogadorLocalizado.isEmpty()) {
             // Sorteio não encontrado, retorne uma resposta de erro
             logger.error("[CartelaController: POST ]jogadorId nao localizado: {} ", cartelaDTO.getJogadorId());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new JogadorNaoExisteException();
         }
 
         List<List<Integer>> linhas = cartelaService.geraNumerosRandomicos();
@@ -138,9 +144,22 @@ public class CartelaController {
         return "OK";
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
-        // Trate a exceção aqui e retorne uma resposta de erro apropriada
-        return ResponseEntity.badRequest().body("Erro de validação: " + ex.getMessage());
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getDefaultMessage())
+                .collect(Collectors.toList());
+
+        ApiErrorMessage apiError = ApiErrorMessage
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .errors(errors)
+                .build();
+
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
+
+
 }

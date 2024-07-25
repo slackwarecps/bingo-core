@@ -27,5 +27,5 @@ public class Tirateima {
     private String vencedorId;
     private String observacao;
     private String modo; // manual, automatico
-    private List<Jogador> participantes;
+    private List<Device> participantes;
 }
