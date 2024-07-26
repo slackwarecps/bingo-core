@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fabioalvaro.sorteiocore.mapper.EventMapper;
+import br.com.fabioalvaro.sorteiocore.mapper.SorteioMapper;
 import br.com.fabioalvaro.sorteiocore.model.Device;
 import br.com.fabioalvaro.sorteiocore.model.Event;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.EventResponseDTO;
@@ -32,6 +34,9 @@ public class PushController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private EventMapper eventMapper;
+
     @GetMapping
     public List<Device> getAllJogadores() {
         return deviceService.findAll();
@@ -41,6 +46,18 @@ public class PushController {
     public List<EventResponseDTO> getAllEvent() {
         logger.info("Buscou /events");
         return eventService.findAll();
+    }
+
+    @GetMapping("/events/{id}")
+    public ResponseEntity<EventResponseDTO> getEventById(@PathVariable String id) {
+        System.out.println("Buscou /events/{id}");
+        Optional<Event> event = eventService.findById(id);
+        if (event.isPresent()) {
+            EventResponseDTO eventResponseDTO =  eventMapper.eventToEventResponseDTO(event.get());
+            return ResponseEntity.ok(eventResponseDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{id}")

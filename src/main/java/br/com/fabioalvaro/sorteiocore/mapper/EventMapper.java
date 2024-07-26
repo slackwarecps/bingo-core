@@ -14,18 +14,11 @@ import br.com.fabioalvaro.sorteiocore.model.dto.response.EventResponseDTO;
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface EventMapper {
 
-    SorteioMapper INSTANCE = Mappers.getMapper(SorteioMapper.class);
+    EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
 
-
-
-    @Mapping(target = "id", source = "event.id")
-    @Mapping(target = "inscritos", source = "event.inscriptions")
-    @Mapping(target = "titulo", source = "event.title")
-    @Mapping(target = "descricao", source = "event.description")
     @Mapping(target = "imagem", source = "event.image")
+    @Mapping(target = "titulo", source = "event.title")
     List<EventResponseDTO> mapToDtoList(List<Event> events);
-
-  
 
     @Mapping(target = "id", source = "event.id")
     @Mapping(target = "inscritos", source = "event.inscriptions")
@@ -33,12 +26,4 @@ public interface EventMapper {
     @Mapping(target = "descricao", source = "event.description")
     @Mapping(target = "imagem", source = "event.image")
     EventResponseDTO eventToEventResponseDTO(Event event);
-
-
-   
-
-    
-
-
-
 }

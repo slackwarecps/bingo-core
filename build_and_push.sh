@@ -3,7 +3,7 @@
 
 # Nome da imagem e tags
 IMAGE_NAME="fabioalvaro/sorteio-core"
-IMAGE_TAG="v1.0.4"
+IMAGE_TAG="v1.0.5"
 LATEST_TAG="latest"
 
 # Build do projeto Maven
