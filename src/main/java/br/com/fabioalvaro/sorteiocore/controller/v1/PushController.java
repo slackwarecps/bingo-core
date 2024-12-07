@@ -25,7 +25,7 @@ import br.com.fabioalvaro.sorteiocore.service.DeviceService;
 import br.com.fabioalvaro.sorteiocore.service.EventService;
 
 @RestController
-@RequestMapping("${bingo.urlPrefixo}/push")
+@RequestMapping("${bingo.urlPrefixo}/v1/push")
 public class PushController {
     private static final Logger logger = LoggerFactory.getLogger(PushController.class);
 

@@ -40,7 +40,7 @@ import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.VendedorNaoE
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("${bingo.urlPrefixo}/cartela")
+@RequestMapping("${bingo.urlPrefixo}/v1/cartelas")
 public class CartelaController {
     private static final Logger logger = LoggerFactory.getLogger(CartelaController.class);
     @Autowired

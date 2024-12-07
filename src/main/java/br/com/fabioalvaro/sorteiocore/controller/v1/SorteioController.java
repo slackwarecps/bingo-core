@@ -32,7 +32,7 @@ import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("${bingo.urlPrefixo}/sorteio")
+@RequestMapping("${bingo.urlPrefixo}/v1/sorteios")
 public class SorteioController {
     private static final Logger logger = LoggerFactory.getLogger(SorteioController.class);
     @Autowired

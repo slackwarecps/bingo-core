@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("${bingo.urlPrefixo}/v1/vendedor")
+@RequestMapping("${bingo.urlPrefixo}/v1/vendedores")
 @Tag(name = "Vendedor", description = "APIs relacionadas aos vendedores")
 
 public class VendedorController {
