@@ -1,0 +1,118 @@
+{
+  "uuid": "37549f6e-090f-44a5-8371-764b240592e6",
+  "lastMigration": 32,
+  "name": "Bingo mockoon",
+  "endpointPrefix": "ms-mock",
+  "latency": 0,
+  "port": 3099,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "02c3f508-06b8-4184-8b12-aba0b82474ad",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "",
+      "responses": [
+        {
+          "uuid": "a2d22bb4-21ec-487b-b2b2-9407bba824c8",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "b3e66a44-72b9-4f8d-a002-38ddcd2f8295",
+      "type": "http",
+      "documentation": "sorteio ;;sorteia uma bola",
+      "method": "get",
+      "endpoint": "v1/sorteios/222333444/sorteia-bola",
+      "responses": [
+        {
+          "uuid": "97542f73-1b34-4222-9d8e-967ea47e3ccf",
+          "body": "{\n  \"bola\":22,\n  \"descricao\":\"dois patinhos na lagoa\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "02c3f508-06b8-4184-8b12-aba0b82474ad"
+    },
+    {
+      "type": "route",
+      "uuid": "b3e66a44-72b9-4f8d-a002-38ddcd2f8295"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
