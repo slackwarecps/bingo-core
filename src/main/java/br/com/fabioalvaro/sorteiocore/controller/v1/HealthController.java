@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.controller;
+package br.com.fabioalvaro.sorteiocore.controller.v1;
 
 import java.util.HashMap;
 import java.util.Map;

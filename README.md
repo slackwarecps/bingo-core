@@ -4,9 +4,10 @@ Api de bingo que faz a analise dos numeros sorteados randomicamente.
 ## Requisitos
 Java 17
 Maven 3.8.8
+Docker
 
 
-# Regras de Negocio 
+# 1 Regras de Negocio 
 * preencher aqui
 Crie uma classe java chamada cartela que contenha tres objetos linha. Cada objeto linha deve guardar uma lista de 5 numeros inteiros e ter um propriedade chamada sorteados que deve ser integer e uma propriedade boolean chamada quadra que por padrao deve ser false;
 
@@ -22,7 +23,7 @@ SS - Segundos com dois dígitos (00 a 59)
 Z - Indicador de fuso horário UTC (pode ser substituído por um deslocamento de fuso horário, como +00:00)
 2024-06-02 08:22:22:001
 
-# Endpoints
+# 2 Endpoints
 
 * Preencher aqui
 

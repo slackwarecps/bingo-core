@@ -1,4 +1,4 @@
-package br.com.fabioalvaro.sorteiocore.controller;
+package br.com.fabioalvaro.sorteiocore.controller.v1;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +16,53 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.service.VendedorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("${bingo.urlPrefixo}/vendedor")
+@RequestMapping("${bingo.urlPrefixo}/v1/vendedor")
+@Tag(name = "Vendedor", description = "APIs relacionadas aos vendedores")
+
 public class VendedorController {
 
     @Autowired
     private VendedorService vendedorService;
+
+
+
+    @Operation(
+        summary = "Busca um vendedor pelo ID",
+        description = "Retorna os detalhes de um vendedor específico com base no ID fornecido."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Vendedor encontrado com sucesso",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Vendedor.class)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Vendedor não encontrado",
+            content = @Content
+        )
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Vendedor>> getVendedorById(@PathVariable String id) {
+        Optional<Vendedor> vendedor = vendedorService.buscarVendedorById(id);
+        return ResponseEntity.ok(vendedor);
+    }
+
+
+
+
+
 
     @PostMapping
     public ResponseEntity<Vendedor> createVendedor(@RequestBody Vendedor vendedor) {
@@ -31,11 +71,6 @@ public class VendedorController {
         return ResponseEntity.ok(createdVendedor);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Vendedor>> getVendedorById(@PathVariable String id) {
-        Optional<Vendedor> vendedor = vendedorService.buscarVendedorById(id);
-        return ResponseEntity.ok(vendedor);
-    }
 
     @GetMapping
     public ResponseEntity<List<Vendedor>> getAllVendedores() {
