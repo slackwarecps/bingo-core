@@ -56,7 +56,7 @@ public class SorteioService {
         sorteio.setUpdatedAt(LocalDateTime.now());
         sorteio.setStatus(SorteioStatusEnum.NOVO);
         sorteio.setNumeros_sorteados_qtd(0L);
-        
+
         return sorteioRepository.save(sorteio);
     }
 
@@ -64,7 +64,7 @@ public class SorteioService {
         return sorteioRepository.findById(id);
     }
 
-  
+
 
     // Criado pelo quick command
     // Stackspot AI
@@ -84,16 +84,17 @@ public class SorteioService {
         logger.info("    ");
         logger.info("    ");
         logger.info("    ");
-        logger.info("  ***************************************************************************  ");
+        logger.info(
+                "  ***************************************************************************  ");
         logger.info("Sorteando bola para o SorteioID: {}", sorteio.getId());
         logger.info("Numeros_sorteados_qtd: {}", sorteio.getNumeros_sorteados_qtd());
 
         Boolean sorteioEncerrado = sorteio.getStatus().equals(SorteioStatusEnum.ENCERRADO);
 
         if (sorteioEncerrado == false) {
-            //Preciso verificar se é a primeira bolinha e se 
+            // Preciso verificar se é a primeira bolinha e se
             // comecou a fase de QUARTAS
-            if (sorteio.getNumeros_sorteados_qtd()==0){
+            if (sorteio.getNumeros_sorteados_qtd() == 0) {
                 logger.info("  Primeira Bolinha  ");
                 sorteio.setStatus(SorteioStatusEnum.EM_PROGRESSO_QUARTA);
                 sorteioRepository.save(sorteio);
@@ -124,7 +125,8 @@ public class SorteioService {
                 // Busca Cartelas que ganharam Full
                 // quantidade de bolas sorteadas é igual ou maior que 15
                 if (sorteio.getNumeros_sorteados_qtd() >= 15) {
-                    logger.info(" Analise de Cartela Cheia=ON qtd={}", sorteio.getNumeros_sorteados_qtd());
+                    logger.info(" Analise de Cartela Cheia=ON qtd={}",
+                            sorteio.getNumeros_sorteados_qtd());
                     Boolean ganhouCheia = cartelaCheiaganhou(sorteio, cartela);
                     if (ganhouCheia) {
                         ListaDeCartelasCheiasVencedoras.add(cartela.getId());
@@ -137,13 +139,15 @@ public class SorteioService {
                 }
 
             }
-            //Verifica se Houve vencedores da Quadra... se SIM. Encerra ciclo e muda de fase.
-            if (sorteio.getGanharamQuadra() >0 && sorteio.getStatus()==SorteioStatusEnum.EM_PROGRESSO_QUARTA){
+            // Verifica se Houve vencedores da Quadra... se SIM. Encerra ciclo e muda de fase.
+            if (sorteio.getGanharamQuadra() > 0
+                    && sorteio.getStatus() == SorteioStatusEnum.EM_PROGRESSO_QUARTA) {
                 sorteio.setStatus(SorteioStatusEnum.EM_PROGRESSO_QUINA);
                 sorteioRepository.save(sorteio);
                 logger.info("Fechando o ciclo de Quadra", ListaDeCartelasCheiasVencedoras);
             }
-            if (sorteio.getGanharamQuina() >0 && sorteio.getStatus()==SorteioStatusEnum.EM_PROGRESSO_QUINA){
+            if (sorteio.getGanharamQuina() > 0
+                    && sorteio.getStatus() == SorteioStatusEnum.EM_PROGRESSO_QUINA) {
                 sorteio.setStatus(SorteioStatusEnum.EM_PROGRESSO_CHEIA);
                 sorteioRepository.save(sorteio);
                 logger.info("Fechando o ciclo de Quina", ListaDeCartelasCheiasVencedoras);
@@ -153,11 +157,12 @@ public class SorteioService {
             logger.info(" Cartelas Vencedoras Cheia qtd={}", ListaDeCartelasCheiasVencedoras);
 
             // 99 - FIM DO SORTEIO?
-            if (numero_sorteado == -1 || sorteio.getNumeros_sorteados_qtd() == 75 || temCartelaVencedora == true) {
+            if (numero_sorteado == -1 || sorteio.getNumeros_sorteados_qtd() == 75
+                    || temCartelaVencedora == true) {
                 logger.info("99 - FIM DO SORTEIO");
                 // Finaliza e Totaliza o Sorteio encerrar o sorteio
                 sorteio.setStatus(SorteioStatusEnum.ENCERRADO);
-                
+
                 sorteioRepository.save(sorteio);
                 // @TODO NOTIFICA DONO DAS CARTELAS VENCEDORAS
 
@@ -166,7 +171,8 @@ public class SorteioService {
                 return -1;
 
             }
-            logger.info("  ***************************************************************************  ");
+            logger.info(
+                    "  ***************************************************************************  ");
             logger.info("Bolas sorteadas: {}", sorteio.getLista_numeros_sorteados());
             logger.info("Numeros_sorteados_qtd: {}", sorteio.getNumeros_sorteados_qtd());
             logger.info("    ");
@@ -182,82 +188,83 @@ public class SorteioService {
     }
 
     private void analisaCartela(Sorteio sorteio, Cartela cartela) {
-        String FASE="EM_PROGRESSO_QUARTA";
+        String FASE = "EM_PROGRESSO_QUARTA";
 
-        if (FASE.equals(sorteio.getStatus().toString()) && cartela.getGanhouQuadra()){
+        if (FASE.equals(sorteio.getStatus().toString()) && cartela.getGanhouQuadra()) {
             logger.info("Cartela ja Ganhou a quadra... sera ignorada na analise.");
 
-        }else if("EM_PROGRESSO_QUINA".equals(sorteio.getStatus().toString()) && cartela.getGanhouQuadra()){
+        } else if ("EM_PROGRESSO_QUINA".equals(sorteio.getStatus().toString())
+                && cartela.getGanhouQuadra()) {
             logger.info("Cartela ja Ganhou a QUINA... sera ignorada na analise.");
-        }else{
+        } else {
 
-            if (sorteio.getStatus().equals(SorteioStatusEnum.EM_PROGRESSO_QUARTA)){
-                if (verificaSeLinhaGenericoGanhou(sorteio, cartela)){
-                    //se a primeira linha ja ganhou a quadra:
-                    //    * marca a cartela e sai...    
-                    cartela.setGanhouQuadra(true); 
+            if (sorteio.getStatus().equals(SorteioStatusEnum.EM_PROGRESSO_QUARTA)) {
+                if (verificaSeLinhaGenericoGanhou(sorteio, cartela)) {
+                    // se a primeira linha ja ganhou a quadra:
+                    // * marca a cartela e sai...
+                    cartela.setGanhouQuadra(true);
                     cartelaRepository.save(cartela);
                     sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
                     sorteioRepository.save(sorteio);
-                    return ;   
+                    return;
                 }
-    
-                     
-                if (verificaSeLinha2Ganhou(sorteio, cartela)){
-                    //se a segunda linha ja ganhou a quadra:
-                    //    * marca a cartela e sai...    
-                    cartela.setGanhouQuadra(true); 
+
+
+                if (verificaSeLinha2Ganhou(sorteio, cartela)) {
+                    // se a segunda linha ja ganhou a quadra:
+                    // * marca a cartela e sai...
+                    cartela.setGanhouQuadra(true);
                     cartelaRepository.save(cartela);
                     sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
                     sorteioRepository.save(sorteio);
-                    return ;   
+                    return;
                 }
-    
-                if (verificaSeLinha3Ganhou(sorteio, cartela)){
-                    //se a terceira linha ja ganhou a quadra:
-                    //    * marca a cartela e sai...    
-                    cartela.setGanhouQuadra(true); 
+
+                if (verificaSeLinha3Ganhou(sorteio, cartela)) {
+                    // se a terceira linha ja ganhou a quadra:
+                    // * marca a cartela e sai...
+                    cartela.setGanhouQuadra(true);
                     cartelaRepository.save(cartela);
                     sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
                     sorteioRepository.save(sorteio);
-                    return ;   
+                    return;
                 }
             }
-         
 
-            if (sorteio.getStatus().equals(SorteioStatusEnum.EM_PROGRESSO_QUINA)){
-                if (verificaSeLinhaGenericoGanhou(sorteio, cartela)){
-                    //se a primeira linha ja ganhou a quina:
-                    //    * marca a cartela e sai...    
-                    cartela.setGanhouQuina(true); 
+
+            if (sorteio.getStatus().equals(SorteioStatusEnum.EM_PROGRESSO_QUINA)) {
+                if (verificaSeLinhaGenericoGanhou(sorteio, cartela)) {
+                    // se a primeira linha ja ganhou a quina:
+                    // * marca a cartela e sai...
+                    cartela.setGanhouQuina(true);
                     cartelaRepository.save(cartela);
                     sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
                     sorteioRepository.save(sorteio);
-                    return ;   
+                    return;
                 }
-    
-                     
-                if (verificaSeLinha2Ganhou(sorteio, cartela)){
-                    //se a segunda linha ja ganhou a quina:
-                    //    * marca a cartela e sai...    
-                    cartela.setGanhouQuina(true); 
+
+
+                if (verificaSeLinha2Ganhou(sorteio, cartela)) {
+                    // se a segunda linha ja ganhou a quina:
+                    // * marca a cartela e sai...
+                    cartela.setGanhouQuina(true);
                     cartelaRepository.save(cartela);
                     sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
                     sorteioRepository.save(sorteio);
-                    return ;   
+                    return;
                 }
-    
-                if (verificaSeLinha3Ganhou(sorteio, cartela)){
-                    //se a terceira linha ja ganhou a quina:
-                    //    * marca a cartela e sai...    
-                    cartela.setGanhouQuina(true); 
+
+                if (verificaSeLinha3Ganhou(sorteio, cartela)) {
+                    // se a terceira linha ja ganhou a quina:
+                    // * marca a cartela e sai...
+                    cartela.setGanhouQuina(true);
                     cartelaRepository.save(cartela);
                     sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
                     sorteioRepository.save(sorteio);
-                    return ;   
+                    return;
                 }
             }
-         
+
         }
 
 
@@ -275,7 +282,8 @@ public class SorteioService {
             List<CartelaNotificadosDTO> listaCartelaNotificadosDTO = new ArrayList<>();
 
             //
-            List<Cartela> listaDeCartelas = cartelaService.buscarCartelasGanhouQuadraPorSorteioId(sorteio.getId());
+            List<Cartela> listaDeCartelas =
+                    cartelaService.buscarCartelasGanhouQuadraPorSorteioId(sorteio.getId());
             for (Cartela cartela : listaDeCartelas) {
                 String mensagem = "Parabéns! Sua cartela " + cartela.getId() + " foi premiada!";
                 notificacaoService.notificaCartela(cartela, mensagem);
@@ -298,7 +306,7 @@ public class SorteioService {
 
     }
 
-    private Integer sorteiaMaisUmaBolinhaNoSorteio(Sorteio sorteio) {
+    public Integer sorteiaMaisUmaBolinhaNoSorteio(Sorteio sorteio) {
         // 01 - Sorteia o Numero
         Integer numero_sorteado = sorteiaNumero(sorteio);
         List<Integer> numerosSorteados = sorteio.getLista_numeros_sorteados();
@@ -321,46 +329,35 @@ public class SorteioService {
 
     private Boolean verificaSeLinha3Ganhou(Sorteio sorteio, Cartela cartela) {
         // LINHA 3
-        // *********************************************************************** */
 
         Linha minhaLinha3 = new Linha();
         minhaLinha3.setLinha(cartela.getLinha03());
-      
-
         // processa linhas QUADRA
-        if (linhaganhou(sorteio, minhaLinha3, SorteioStatusEnum.EM_PROGRESSO_QUARTA, cartela)) { 
+        if (linhaganhou(sorteio, minhaLinha3, SorteioStatusEnum.EM_PROGRESSO_QUARTA, cartela)) {
             return true;
-        }else{
+        } else {
             return false;
         }   
-        // // processa linha QUINA
-        // if (linhaganhou(sorteio, minhaLinha3, "QUINA", cartela)) {
-        //     sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
-        //     cartela.setGanhouQuina(true);
-        //     cartelaRepository.save(cartela);
-
-        // }
-        // sorteioRepository.save(sorteio);
     }
 
     private Boolean verificaSeLinha2Ganhou(Sorteio sorteio, Cartela cartela) {
         // LINHA 2
         // *********************************************************************** */
-     
+
         Linha minhaLinha2 = new Linha();
         minhaLinha2.setLinha(cartela.getLinha02());
-     
+
         // processa linhas QUADRA
-        if (linhaganhou(sorteio, minhaLinha2, SorteioStatusEnum.EM_PROGRESSO_QUARTA, cartela)) { 
+        if (linhaganhou(sorteio, minhaLinha2, SorteioStatusEnum.EM_PROGRESSO_QUARTA, cartela)) {
             return true;
-        }else{
+        } else {
             return false;
-        }   
+        }
         // // processa linha QUINA
         // if (linhaganhou(sorteio, minhaLinha2, "QUINA", cartela)) {
-        //     sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
-        //     cartela.setGanhouQuina(true);
-        //     cartelaRepository.save(cartela);
+        // sorteio.setGanharamQuina(sorteio.getGanharamQuina() + 1);
+        // cartela.setGanhouQuina(true);
+        // cartelaRepository.save(cartela);
         // }
         // sorteioRepository.save(sorteio);
     }
@@ -374,12 +371,11 @@ public class SorteioService {
 
 
         // processa linhas QUADRA
-        if (linhaganhou(sorteio, minhaLinha1, sorteio.getStatus(), cartela)) { 
+        if (linhaganhou(sorteio, minhaLinha1, sorteio.getStatus(), cartela)) {
             return true;
-        }else{
+        } else {
             return false;
-        }     
-
+        }
 
 
 
@@ -403,7 +399,7 @@ public class SorteioService {
         else
             minhaLinha1.setGanhouQuina(cartela.getGanhouQuina());
 
-      
+
         // processa linhas QUADRA
         if (linhaganhou(sorteio, minhaLinha1, SorteioStatusEnum.EM_PROGRESSO_QUARTA, cartela)) {
             sorteio.setGanharamQuadra(sorteio.getGanharamQuadra() + 1);
@@ -419,14 +415,13 @@ public class SorteioService {
         sorteioRepository.save(sorteio);
     }
 
-  
+
     /**
      * Verifica se a cartela ganhou com todos os números sorteados.
      *
      * @param sorteio O objeto Sorteio contendo a lista de números sorteados.
      * @param cartela O objeto Cartela contendo os números da cartela.
-     * @return true se a cartela ganhou com todos os números sorteados, false caso
-     *         contrário.
+     * @return true se a cartela ganhou com todos os números sorteados, false caso contrário.
      */
     private Boolean cartelaCheiaganhou(Sorteio sorteio, Cartela cartela) {
         // Log de início da análise da cartela cheia
@@ -474,10 +469,12 @@ public class SorteioService {
     }
 
     // Modo Analise QUADRA, QUINTA
-    public Boolean linhaganhou(Sorteio sorteio, Linha linha, SorteioStatusEnum modoAnalise, Cartela cartela) {
+    public Boolean linhaganhou(Sorteio sorteio, Linha linha, SorteioStatusEnum modoAnalise,
+            Cartela cartela) {
         logger.info("");
         // logger.info(" %%%%%%%%%%%%%% LINHA ANALISE %%%%%%%%%%%%%%%%%%%%%%");
-        List<SorteioStatusEnum> modosValidos = Arrays.asList(SorteioStatusEnum.EM_PROGRESSO_QUARTA,SorteioStatusEnum.EM_PROGRESSO_QUINA);
+        List<SorteioStatusEnum> modosValidos = Arrays.asList(SorteioStatusEnum.EM_PROGRESSO_QUARTA,
+                SorteioStatusEnum.EM_PROGRESSO_QUINA);
         if (!modosValidos.contains(modoAnalise)) {
             throw new RuntimeException("OPS!!! MODO INVALIDO DE ANALISE DE LINHA ");
         }
@@ -502,31 +499,32 @@ public class SorteioService {
         Boolean retorno = null;
         // SE QUADRA
         if (modoAnalise == SorteioStatusEnum.EM_PROGRESSO_QUARTA) {
-            if (count == 4 && linha.isGanhouQuadra() == false && cartela.getGanhouQuadra() == false) {
+            if (count == 4 && linha.isGanhouQuadra() == false
+                    && cartela.getGanhouQuadra() == false) {
                 System.out.println("        Linha Vencedora QUADRA: " + count);
-                //cartela.setGanhouQuadra(true);
-                //cartelaRepository.save(cartela);
+                // cartela.setGanhouQuadra(true);
+                // cartelaRepository.save(cartela);
                 retorno = true;
             } else {
                 // Exibe o resultado
                 // if (cartela.getGanhouQuadra() == true)
-                //     logger.warn("       Cartela Ja ganhou a QUADRA.", true);
-                // logger.info("       Quantidade de números presentes nos numeros_sorteados: " + count);
+                // logger.warn(" Cartela Ja ganhou a QUADRA.", true);
+                // logger.info(" Quantidade de números presentes nos numeros_sorteados: " + count);
                 retorno = false;
             }
         }
         // SE QUINA
         else if (modoAnalise == SorteioStatusEnum.EM_PROGRESSO_QUINA) {
             if (count == 5 && linha.isGanhouQuina() == false && cartela.getGanhouQuina() == false) {
-                // System.out.println("        Linha Vencedora QUINA: " + count);
+                // System.out.println(" Linha Vencedora QUINA: " + count);
                 // cartela.setGanhouQuina(true);
                 // cartelaRepository.save(cartela);
                 retorno = true;
             } else {
                 // // Exibe o resultado
                 // if (cartela.getGanhouQuina() == true)
-                //     logger.warn("       Cartela Ja ganhou a QUINA.", true);
-                // logger.info("       Quantidade de números presentes nos numeros_sorteados: " + count);
+                // logger.warn(" Cartela Ja ganhou a QUINA.", true);
+                // logger.info(" Quantidade de números presentes nos numeros_sorteados: " + count);
                 retorno = false;
             }
         } else {
@@ -578,8 +576,7 @@ public class SorteioService {
     }
 
     public List<SorteioMinimoDTO> buscaTodosMinimosDto() {
-        return sorteioRepository.findAll().stream()
-                .map(sorteioMapper::sorteioToMinimoDTO)
+        return sorteioRepository.findAll().stream().map(sorteioMapper::sorteioToMinimoDTO)
                 .collect(Collectors.toList());
     }
 

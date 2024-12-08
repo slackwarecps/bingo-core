@@ -1,8 +1,16 @@
 package br.com.fabioalvaro.sorteiocore.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,10 +21,16 @@ import br.com.fabioalvaro.sorteiocore.model.Linha;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
 import br.com.fabioalvaro.sorteiocore.model.enums.SorteioStatusEnum;
 import br.com.fabioalvaro.sorteiocore.repository.CartelaRepository;
+import br.com.fabioalvaro.sorteiocore.repository.SorteioRepository;
 
 public class SorteioServiceTest {
-   @Mock
+        @Mock
+    private SorteioRepository sorteioRepository;
+
+    @Mock
     private CartelaRepository cartelaRepository;
+
+
 
     @InjectMocks
     private SorteioService sorteioService;
@@ -105,5 +119,49 @@ public class SorteioServiceTest {
     }
 
 
+    @Test
+    public void deveriaFalharAoSortearBolaParaSorteioEncerrado() {
+        // Configuração do sorteio com status ENCERRADO
+        Sorteio sorteio = new Sorteio();
+        sorteio.setId("sorteio-encerrado");
+        sorteio.setStatus(SorteioStatusEnum.ENCERRADO);
+        sorteio.setNumeros_sorteados_qtd(75L); // Simula que todas as bolas já foram sorteadas
+
+        // Configuração de uma lista vazia de cartelas (não relevante para este teste)
+        List<Cartela> cartelasDoSorteio = new ArrayList<>();
+
+        // Execução do método
+        int resultado = sorteioService.sorteiaBola(sorteio, cartelasDoSorteio);
+
+        // Validação: o método deve retornar 99, indicando que o sorteio já está encerrado
+        assertEquals(99, resultado, "O método deveria retornar 99 para sorteios encerrados.");
+    }
+
+    @Test
+    public void deveriaRetornarZeroQuandoSorteioNaoEncerradoENaoFinalizado() {
+        // Configuração do sorteio
+        Sorteio sorteio = new Sorteio();
+        sorteio.setId("sorteio-ativo");
+        sorteio.setStatus(SorteioStatusEnum.EM_PROGRESSO_QUARTA);
+        sorteio.setNumeros_sorteados_qtd(10L); // Simula que já foram sorteadas 10 bolas
+        sorteio.setLista_numeros_sorteados(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+        sorteio.setUpdatedAt(LocalDateTime.now());
+
+        // Configuração de uma lista de cartelas (não relevante para este teste)
+        List<Cartela> cartelasDoSorteio = new ArrayList<>();
+
+        // Mock do repositório para salvar o sorteio
+        when(sorteioRepository.save(any(Sorteio.class))).thenReturn(sorteio);
+
+        // Mock do método sorteiaMaisUmaBolinhaNoSorteio
+        SorteioService spySorteioService = spy(sorteioService);
+        doReturn(11).when(spySorteioService).sorteiaMaisUmaBolinhaNoSorteio(any(Sorteio.class));
+
+        // Execução do método
+        int resultado = spySorteioService.sorteiaBola(sorteio, cartelasDoSorteio);
+
+        // Validação: o método deve retornar 0, indicando que o sorteio não foi encerrado
+        assertEquals(0, resultado, "O método deveria retornar 0 para sorteios não encerrados e não finalizados.");
+    }
 
 }
