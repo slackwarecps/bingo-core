@@ -98,6 +98,7 @@ public class SorteioService {
 
         if (sorteioEncerrado == false) {
             Integer numero_sorteado = sorteiaMaisUmaBolinhaNoSorteio(sorteio);
+            sorteio.setUpdatedAt(LocalDateTime.now());
             // 03 ALGUEM GANHOU??
             Boolean temCartelaVencedora = false;
             List<String> ListaDeCartelasCheiasVencedoras = new ArrayList<>();
@@ -130,6 +131,7 @@ public class SorteioService {
                 logger.info("99 - FIM DO SORTEIO");
                 // Finaliza e Totaliza o Sorteio encerrar o sorteio
                 sorteio.setStatus("ENCERRADO");
+                
                 sorteioRepository.save(sorteio);
                 // @TODO NOTIFICA DONO DAS CARTELAS VENCEDORAS
 

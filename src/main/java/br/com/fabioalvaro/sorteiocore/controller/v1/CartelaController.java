@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +18,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.com.fabioalvaro.sorteiocore.model.Cartela;
-import br.com.fabioalvaro.sorteiocore.model.Device;
 import br.com.fabioalvaro.sorteiocore.model.Jogador;
 import br.com.fabioalvaro.sorteiocore.model.Sorteio;
 import br.com.fabioalvaro.sorteiocore.model.Vendedor;
 import br.com.fabioalvaro.sorteiocore.model.dto.request.CartelaDTO;
 import br.com.fabioalvaro.sorteiocore.model.dto.response.CartelaResponseDTO;
 import br.com.fabioalvaro.sorteiocore.service.CartelaService;
-import br.com.fabioalvaro.sorteiocore.service.DeviceService;
 import br.com.fabioalvaro.sorteiocore.service.JogadorService;
 import br.com.fabioalvaro.sorteiocore.service.SorteioService;
 import br.com.fabioalvaro.sorteiocore.service.VendedorService;
 import br.com.fabioalvaro.sorteiocore.service.saldo.SaldoService;
 import br.com.fabioalvaro.sorteiocore.utils.excessoes.ApiErrorMessage;
 import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.JogadorNaoExisteException;
+import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.SorteioJaIniciadoException;
 import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.SorteioNaoExisteException;
 import br.com.fabioalvaro.sorteiocore.utils.excessoes.ErroDeDominio.VendedorNaoExisteException;
 import jakarta.validation.Valid;
@@ -71,11 +68,15 @@ public class CartelaController {
             logger.info("Saldo do Jogador {}", valor);
         }
 
+
+
         Cartela cartela = new Cartela();
         cartela.setJogadorId(cartelaDTO.getJogadorId());
         cartela.setSorteioId(cartelaDTO.getSorteioId());
         cartela.setVendedorId(cartelaDTO.getVendedorId());
         cartela.setValor(cartelaDTO.getValor());
+
+
         // Validar Sorteio
         Optional<Sorteio> sorteioLocalizado = sorteioService.buscarSorteioPorId(cartelaDTO.getSorteioId());
         // Validar Vendedor
@@ -88,7 +89,17 @@ public class CartelaController {
             logger.error("[CartelaController: POST ]SorteioId nao localizado: {} ", cartelaDTO.getSorteioId());
             throw new SorteioNaoExisteException();
             //return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }else{
+            Sorteio sorteio = sorteioLocalizado.get();
+            if (sorteio.getNumeros_sorteados_qtd() > 0) {
+                // Sorteio já iniciado, retorne uma resposta de erro
+                logger.error("[CartelaController: POST ]SorteioId já iniciado: {} ", cartelaDTO.getSorteioId());
+                throw new SorteioJaIniciadoException();            }
         }
+
+
+
+
         if (vendedorLocalizado.isEmpty()) {
             // Sorteio não encontrado, retorne uma resposta de erro
             logger.error("[CartelaController: POST ]vendedorId nao localizado: {} ", cartelaDTO.getVendedorId());
@@ -163,3 +174,4 @@ public class CartelaController {
 
 
 }
+
