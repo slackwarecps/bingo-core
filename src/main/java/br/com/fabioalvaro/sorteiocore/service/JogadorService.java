@@ -29,7 +29,9 @@ public class JogadorService {
     }
 
     public Jogador save(Jogador jogador) {
-        jogador.setCreatedAt(LocalDateTime.now());
+        if (jogador.getId() == null || jogador.getId().isEmpty()) {
+            jogador.setCreatedAt(LocalDateTime.now());
+        }
         return jogadorRepository.save(jogador);
     }
 

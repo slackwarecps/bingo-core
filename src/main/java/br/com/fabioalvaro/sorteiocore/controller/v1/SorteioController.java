@@ -102,6 +102,12 @@ public class SorteioController {
    
         sorteio.setLocal(sorteioDTO.getLocal());
         sorteio.setNome(sorteioDTO.getNome());
+        sorteio.setValor(sorteioDTO.getValor());
+        sorteio.setPremioQuadra(sorteioDTO.getPremioQuadra());
+        sorteio.setPremioQuina(sorteioDTO.getPremioQuina());
+        sorteio.setPremioCheia(sorteioDTO.getPremioCheia());
+
+      
 
         Sorteio savedSorteio = sorteioService.adicionarSorteio(sorteio);
 
