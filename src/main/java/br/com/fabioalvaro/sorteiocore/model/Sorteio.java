@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import br.com.fabioalvaro.sorteiocore.model.enums.SorteioStatusEnum;
 import br.com.fabioalvaro.sorteiocore.model.enums.TipoSorteioEnum;
 import br.com.fabioalvaro.sorteiocore.model.enums.TiraTeimaEnum;
 import lombok.AllArgsConstructor;
@@ -49,5 +49,5 @@ public class Sorteio {
     private TiraTeimaEnum TiraTeima; // [AUTOMATICO,MANUAL];
     private String tiraTeimaId;
     private String descricao;
-    private String status; // ENCERRADO/ATIVO/EXCLUIDO
+    private SorteioStatusEnum status; // ENCERRADO/ATIVO/EXCLUIDO
 }

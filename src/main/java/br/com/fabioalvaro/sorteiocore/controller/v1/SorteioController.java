@@ -38,7 +38,7 @@ public class SorteioController {
     private CartelaService cartelaService;
 
     @PostMapping(path = "/sorteia-bola", produces = "application/json")
-    public ResponseEntity<SorteiaBolaDTO> adicionarSorteiox(@RequestBody SorteiaBolaDTO sorteioDTO) {
+    public ResponseEntity<SorteiaBolaDTO> sorteiaNovaBola(@RequestBody SorteiaBolaDTO sorteioDTO) {
         List<Cartela> cartelasDoSorteio = cartelaService.buscarCartelaPorSorteioId(sorteioDTO.getSorteioId());
         Optional<Sorteio> optionalSorteio = sorteioService.buscarSorteioPorId(sorteioDTO.getSorteioId());
 
