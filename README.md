@@ -86,6 +86,19 @@ Para configurar o VSCode para executar o projeto, use o seguinte arquivo launch.
 }
 ````
 
+### Dump do Atlas 
+1 caso queira usar um dump e um backup do atlas. configure o basrc do seu terminal
+2 instale o mongodb-database-tools
+2 execute o arquivo de restore que esta na pasta tools do projeto.
+```
+$ brew tap mongodb/brew
+$ brew install mongodb-database-tools
+
+$ code ~/.zshrc  
+## BINGO DEMO FABIO
+export SOURCE_MONGO_URI_PRD="mongodb+srv://asx:asd@asd.dsdasd.mongodb.net"
+```
+
 ## 5 Collection do ThunderClient 
 Para testar os metodos existe uma collection json que pode ser acessada na pasta /collection
 * instale a extensao ThunderCliente do vscode ou importe a collection no postman.
