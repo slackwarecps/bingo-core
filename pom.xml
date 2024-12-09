@@ -70,12 +70,7 @@
 		<artifactId>spring-boot-starter-data-mongodb</artifactId>
 	</dependency>
 	
-	<!-- Model Mapper -->
-    <!-- <dependency>
-        <groupId>org.modelmapper</groupId>
-        <artifactId>modelmapper</artifactId>
-        <version>2.4.4</version>
-    </dependency> -->
+
   <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
@@ -119,7 +114,57 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>              
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>PACKAGE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.6</minimum>                                  </limit> 
+									</limits>
+								</rule>
+							</rules>
+							    <excludes>
+									<exclude>**/*Conf*</exclude>
+									<exclude>**/*Model.*</exclude>
+									<exclude>**/model/**</exclude>
+								</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			
 		</plugins>
+
+		
 	</build>
 
 </project>
